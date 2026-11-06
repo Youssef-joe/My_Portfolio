@@ -65,10 +65,10 @@ export default function EditorPage() {
         tags: '',
         body: ''
       }));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       setStatus('error');
-      setErrorMessage(err.message);
+      setErrorMessage(err instanceof Error ? err.message : 'Unknown error');
     }
   };
 

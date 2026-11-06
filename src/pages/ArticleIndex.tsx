@@ -1,65 +1,113 @@
 import { Link } from 'react-router-dom';
 import SiteHeader from '../components/SiteHeader';
-import { useReveal } from '../components/useReveal';
 import { useLanguage } from '../contexts/LanguageContext';
 import { articles, formatDate } from '../lib/articles';
 import { ui } from '../data/site';
 
 export default function ArticleIndex() {
-  useReveal();
   const { language } = useLanguage();
   const t = ui[language];
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-warm-white)', minHeight: '100vh' }}>
+    <div className="portal-frame">
       <SiteHeader />
 
-      <main className="shell" style={{ paddingTop: 'clamp(7rem, 14vh, 11rem)', paddingBottom: 'var(--section-gap)' }}>
-        <p className="label" style={{ marginBottom: '1rem' }}>{t.sectionWriting}</p>
-        <h1 className="display" style={{ marginBottom: 'clamp(2.5rem, 6vw, 4.5rem)', maxWidth: '14ch' }}>
-          {t.writingTitle}
-        </h1>
+      <main className="p-4 md:p-6 space-y-6">
+        {/* Breadcrumb */}
+        <div className="text-xs font-mono text-[var(--text-sub)] pb-2 border-b border-[var(--border-light)] flex items-center gap-2">
+          <Link to="/" className="text-[var(--link-color)] hover:underline">
+            Portal Index
+          </Link>
+          <span>/</span>
+          <span className="text-[var(--text-main)] font-semibold">blog_archive.html</span>
+        </div>
 
-        {articles.length === 0 ? (
-          <p className="prose-body" style={{ color: 'var(--text-grey)' }}>{t.writingEmpty}</p>
-        ) : (
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {articles.map((article, i) => (
-              <li key={article.slug} className="reveal" style={{ borderTop: i === 0 ? '1px solid var(--border-light)' : 'none', borderBottom: '1px solid var(--border-light)' }}>
-                <Link to={`/writing/${article.slug}`} className="article-row" style={{ display: 'block', textDecoration: 'none', color: 'inherit', paddingBlock: 'clamp(1.5rem, 3.5vw, 2.25rem)' }}>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem 1rem', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <h2 className="heading article-row-title" style={{ maxWidth: '24ch' }}>{article.title}</h2>
-                    <span className="label" style={{ color: 'var(--text-faint)' }}>
-                      {formatDate(article.date, article.lang)}
-                    </span>
-                  </div>
-                  {article.description && (
-                    <p className="prose-body" style={{ color: 'var(--text-grey)', marginBottom: '0.75rem' }}>{article.description}</p>
-                  )}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-                    <span className="label" style={{ color: 'var(--text-faint)' }}>
-                      {article.readingMinutes} {t.minRead}
-                    </span>
-                    {article.draft && (
-                      <span className="label" style={{ color: 'var(--accent-teal)', border: '1px solid var(--accent-teal)', borderRadius: '999px', padding: '2px 9px' }}>
-                        {t.draftBadge}
+        <div className="panel-card">
+          <div className="panel-card-header">
+            <div className="panel-title">
+              <span className="text-[var(--accent-red)]">§</span>
+              <span>{t.sectionWriting} // ARCHIVE</span>
+            </div>
+            <span className="badge-retro">
+              <span className="badge-retro-key">COUNT</span>
+              <span className="badge-retro-val">{articles.length} Posts</span>
+            </span>
+          </div>
+
+          <div className="panel-body">
+            <h1 className="text-xl md:text-2xl font-bold text-[var(--text-main)] mb-2">
+              {t.writingTitle}
+            </h1>
+            <p className="text-xs text-[var(--text-sub)] mb-6 font-mono">
+              // Technical essays on database internals, storage layouts, citation forensics, and systems engineering.
+            </p>
+
+            {articles.length === 0 ? (
+              <p className="prose-body text-xs text-[var(--text-sub)]">{t.writingEmpty}</p>
+            ) : (
+              <div className="space-y-4">
+                {articles.map((article) => (
+                  <div
+                    key={article.slug}
+                    className="border border-[var(--border-light)] bg-[var(--bg-panel)] p-4 hover:border-[var(--accent-blue)] transition-colors shadow-sm"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-2">
+                      <h2 className="text-base font-bold text-[var(--text-main)]">
+                        <Link
+                          to={`/writing/${article.slug}`}
+                          className="text-inherit hover:text-[var(--link-hover)] no-underline hover:underline"
+                        >
+                          {article.title}
+                        </Link>
+                      </h2>
+                      <span className="font-mono text-xs text-[var(--text-faint)] whitespace-nowrap">
+                        {formatDate(article.date, article.lang)}
                       </span>
+                    </div>
+
+                    {article.description && (
+                      <p className="prose-body text-xs text-[var(--text-sub)] leading-relaxed mb-3">
+                        {article.description}
+                      </p>
                     )}
-                    {article.tags.map((tag) => (
-                      <span key={tag} className="label" style={{ border: '1px solid var(--border-light)', borderRadius: '999px', padding: '2px 9px', color: 'var(--text-grey)', letterSpacing: '0.06em' }}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
 
-        <Link to="/" className="label" style={{ display: 'inline-block', marginTop: '3rem', color: 'var(--text-grey)', textDecoration: 'none' }}>
-          ← {t.backHome}
-        </Link>
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-light)]">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-mono text-[var(--text-faint)]">
+                          {article.readingMinutes} {t.minRead}
+                        </span>
+                        {article.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-[10px] font-mono px-1.5 py-0.5 bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-sub)]"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <Link
+                        to={`/writing/${article.slug}`}
+                        className="btn-retro text-xs"
+                      >
+                        Read Full Article →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-8 pt-4 border-t border-[var(--border-light)] flex justify-between items-center text-xs">
+              <Link to="/" className="btn-retro">
+                ← {t.backHome}
+              </Link>
+              <a href="#top" className="text-[var(--text-faint)] hover:underline font-mono">
+                ↑ {t.backToTop}
+              </a>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

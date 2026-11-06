@@ -1,22 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
-import { ui } from '../data/site';
+import { ui, contact } from '../data/site';
 
-type NavItem = {
+interface NavItem {
   id: string;
-  key: string;
-  isPage?: boolean;
-};
+  labelEn: string;
+  labelAr: string;
+  icon: string;
+  isRoute?: boolean;
+  routePath?: string;
+}
 
 const navItems: NavItem[] = [
-  { id: 'about', key: 'navAbout' },
-  { id: 'work', key: 'navWork' },
-  { id: 'story', key: 'navStory', isPage: true },
-  { id: 'writing', key: 'navWriting', isPage: true },
-  { id: 'cv', key: 'navCV' },
-  { id: 'contact', key: 'navContact' },
+  { id: 'top', labelEn: 'Home', labelAr: 'الرئيسية', icon: '⌂' },
+  { id: 'about', labelEn: 'About', labelAr: 'نبذة', icon: 'ℹ' },
+  { id: 'experience', labelEn: 'Experience', labelAr: 'الخبرات', icon: '💼' },
+  { id: 'work', labelEn: 'Projects', labelAr: 'المشاريع', icon: '⚙' },
+  { id: 'publications', labelEn: 'Research', labelAr: 'الأبحاث', icon: '📄' },
+  { id: 'writing', labelEn: 'Blog', labelAr: 'المقالات', icon: '✍' },
+  { id: 'art', labelEn: 'Art', labelAr: 'الفن', icon: '🎨' },
+  { id: 'story', labelEn: 'Story', labelAr: 'القصة', icon: '📜' },
+  { id: 'cv', labelEn: 'CV', labelAr: 'السيرة', icon: '📋' },
+  { id: 'contact', labelEn: 'Contact', labelAr: 'تواصل', icon: '✉' },
 ];
 
 export default function SiteHeader() {
@@ -25,197 +32,135 @@ export default function SiteHeader() {
   const t = ui[language];
   const location = useLocation();
   const onHome = location.pathname === '/';
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
-    if (!onHome) { setActive(''); return; }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
-    navItems.forEach(({ id, isPage }) => {
-      if (isPage) return;
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, [onHome]);
-
-  const chip: React.CSSProperties = {
-    fontFamily: 'var(--font-mono)',
-    fontSize: 'var(--step--1)',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    color: 'var(--text-grey)',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: '4px 2px',
-    transition: 'color 0.2s ease',
-  };
-
   return (
-    <header
-      style={{
-        position: 'fixed',
-        insetInline: 0,
-        top: 0,
-        zIndex: 50,
-        backgroundColor: scrolled ? 'color-mix(in srgb, var(--bg-warm-white) 85%, transparent)' : 'transparent',
-        backdropFilter: scrolled ? 'saturate(180%) blur(12px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'saturate(180%) blur(12px)' : 'none',
-        borderBottom: `1px solid ${scrolled ? 'var(--border-light)' : 'transparent'}`,
-        transition: 'background-color 0.3s ease, border-color 0.3s ease',
-      }}
-    >
-      <div className="shell flex items-center justify-between" style={{ height: '56px', gap: '1rem' }}>
-        <Link
-          to="/"
-          className="label label-strong"
-          style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
-        >
-          Youssef Ali
-        </Link>
-
-        {/* Anchors only resolve on the home page; elsewhere they route home first. */}
-        <nav aria-label="Sections" className="hidden sm:flex items-center" style={{ gap: 'clamp(0.75rem, 2vw, 1.75rem)' }}>
-          {navItems.map(({ id, key, isPage }) => {
-            if (isPage) {
-              return (
-                <Link
-                  key={id}
-                  to={`/${id}`}
-                  className="label"
-                  style={{
-                    textDecoration: 'none',
-                    color: location.pathname.startsWith(`/${id}`) ? 'var(--accent-teal)' : 'var(--text-grey)',
-                    transition: 'color 0.2s ease',
-                  }}
-                >
-                  {t[key]}
-                </Link>
-              );
-            }
-            return (
-              <a
-                key={id}
-                href={onHome ? `#${id}` : `/#${id}`}
-                className="label"
-                style={{
-                  textDecoration: 'none',
-                  color: active === id ? 'var(--accent-teal)' : 'var(--text-grey)',
-                  transition: 'color 0.2s ease',
-                }}
-              >
-                {t[key]}
-              </a>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center" style={{ gap: '1rem' }}>
+    <header className="portal-header">
+      {/* 2005 Vintage Titlebar Strip */}
+      <div className="win-titlebar">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-xs opacity-80">⚙</span>
+          <span>{t.portalName}</span>
+        </div>
+        <div className="flex items-center gap-3 text-xs">
+          {/* Theme switcher */}
           <button
-            type="button"
-            className="sm:hidden"
-            style={chip}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-teal)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-grey)'; }}
-          >
-            {mobileMenuOpen ? '✕' : '☰'}
-          </button>
-          <button
-            type="button"
-            style={chip}
-            onClick={toggleLanguage}
-            aria-label={t.toggleLang}
-            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-teal)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-grey)'; }}
-          >
-            {language === 'en' ? 'عربي' : 'EN'}
-          </button>
-          <button
-            type="button"
-            style={chip}
             onClick={toggleTheme}
-            aria-label={t.toggleTheme}
-            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-teal)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-grey)'; }}
+            className="px-2 py-0.5 rounded text-[11px] font-mono bg-white/20 hover:bg-white/30 text-white transition-colors"
+            title={t.toggleTheme}
           >
-            {theme === 'light' ? 'Dark' : 'Light'}
+            {theme === 'light' ? '☼ Light' : '☾ Dark'}
+          </button>
+
+          {/* Language toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="px-2 py-0.5 rounded text-[11px] font-mono bg-white/20 hover:bg-white/30 text-white transition-colors"
+            title="Switch Language"
+          >
+            {language === 'en' ? 'العربية' : 'English'}
           </button>
         </div>
       </div>
 
-      {mobileMenuOpen && (
-        <nav
-          className="sm:hidden flex flex-col border-t"
-          style={{
-            borderColor: 'var(--border-light)',
-            backgroundColor: scrolled ? 'transparent' : 'var(--bg-warm-white)',
-          }}
-        >
-          {navItems.map(({ id, key, isPage }) => {
-            const commonProps = {
-              key: id,
-              className: "label",
-              style: {
-                textDecoration: 'none',
-                padding: '1.25rem var(--gutter)',
-                borderBottom: '1px solid var(--border-light)',
-                transition: 'color 0.2s ease',
-              },
-              onClick: () => setMobileMenuOpen(false),
-            };
+      {/* Main Masthead Banner */}
+      <div className="px-4 py-4 md:px-6 md:py-5 border-b border-[var(--border-light)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-[var(--bg-header-gradient)]">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-[var(--text-main)]">
+              <Link to="/" className="text-inherit no-underline hover:text-[var(--link-hover)]">
+                {contact.name}
+              </Link>
+            </h1>
+            <span className="badge-retro">
+              <span className="badge-retro-key">REV</span>
+              <span className="badge-retro-val">2026.11</span>
+            </span>
+          </div>
+          <p className="text-xs md:text-sm text-[var(--text-sub)] mt-1 font-sans">
+            {contact.title}
+          </p>
+        </div>
 
-            if (isPage) {
-              return (
-                <Link
-                  to={`/${id}`}
-                  {...commonProps}
-                  style={{
-                    ...commonProps.style,
-                    color: location.pathname.startsWith(`/${id}`) ? 'var(--accent-teal)' : 'var(--text-charcoal)'
-                  }}
-                >
-                  {t[key]}
-                </Link>
-              );
-            }
-            return (
-              <a
-                href={onHome ? `#${id}` : `/#${id}`}
-                {...commonProps}
-                style={{
-                  ...commonProps.style,
-                  color: active === id ? 'var(--accent-teal)' : 'var(--text-charcoal)'
-                }}
-              >
-                {t[key]}
-              </a>
-            );
-          })}
-        </nav>
-      )}
+        <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <a
+            href={contact.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-retro"
+          >
+            GitHub
+          </a>
+          <a
+            href={contact.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-retro"
+          >
+            LinkedIn
+          </a>
+          <a
+            href={`mailto:${contact.email}`}
+            className="btn-retro"
+          >
+            {contact.email}
+          </a>
+        </div>
+      </div>
+
+      {/* Navigation Folder Tabs */}
+      <div className="nav-tabs overflow-x-auto">
+        {navItems.map((item) => {
+          const label = language === 'en' ? item.labelEn : item.labelAr;
+          const href = onHome ? `#${item.id}` : `/#${item.id}`;
+
+          return (
+            <a
+              key={item.id}
+              href={href}
+              className="nav-tab-item"
+            >
+              <span>{item.icon}</span>
+              <span>{label}</span>
+            </a>
+          );
+        })}
+
+        {/* Dedicated Route links */}
+        <Link
+          to="/story"
+          className="nav-tab-item"
+        >
+          <span>✦</span>
+          <span>{language === 'en' ? 'Story (Full Page)' : 'صفحة القصة'}</span>
+        </Link>
+        <Link
+          to="/writing"
+          className="nav-tab-item"
+        >
+          <span>✎</span>
+          <span>{language === 'en' ? 'Blog Index' : 'أرشيف المقالات'}</span>
+        </Link>
+      </div>
+
+      {/* 2005 Breadcrumb & Status Bar */}
+      <div className="status-ticker">
+        <div className="flex items-center gap-2">
+          <span className="opacity-75">PORTAL //</span>
+          <span className="text-[var(--text-main)] font-semibold">
+            {onHome ? 'index.html' : location.pathname}
+          </span>
+          <span className="opacity-50">|</span>
+          <span>{contact.location}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="status-dot-online" />
+          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+            {t.statusOnline}
+          </span>
+        </div>
+      </div>
     </header>
   );
 }

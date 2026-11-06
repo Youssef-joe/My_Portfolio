@@ -16,7 +16,7 @@ function getInitialTheme(): Theme {
     const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
     if (stored === 'light' || stored === 'dark') return stored;
   } catch { /* ignore */ }
-    return 'dark';
+  return 'light';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -26,8 +26,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.setAttribute('data-theme', theme);
     try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }
   }, [theme]);
-
-  useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme(p => p === 'light' ? 'dark' : 'light') }}>
