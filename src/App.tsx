@@ -1,4 +1,3 @@
-import { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import SiteHeader from './components/SiteHeader';
 import HeroSection from './components/HeroSection';
@@ -14,13 +13,12 @@ import ContactSection from './components/ContactSection';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ui } from './data/site';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import NotFound from './pages/NotFound';
-
-/* Lazy loaded routes */
-const ArticleIndex = lazy(() => import('./pages/ArticleIndex'));
-const ArticleReader = lazy(() => import('./pages/ArticleReader'));
-const StoryPage = lazy(() => import('./pages/StoryPage'));
-const EditorPage = lazy(() => import('./pages/EditorPage'));
+import ArticleIndex from './pages/ArticleIndex';
+import ArticleReader from './pages/ArticleReader';
+import StoryPage from './pages/StoryPage';
+import EditorPage from './pages/EditorPage';
 
 function HomePage() {
   const { language } = useLanguage();
@@ -58,7 +56,7 @@ function AnimatedRoutes() {
 
   return (
     <div key={location.pathname} className="route-enter">
-      <Suspense fallback={<div className="min-h-screen bg-[var(--bg-canvas)]" />}>
+      <ErrorBoundary>
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
           <Route path="/story" element={<StoryPage />} />
@@ -67,7 +65,7 @@ function AnimatedRoutes() {
           <Route path="/writing/:slug" element={<ArticleReader />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

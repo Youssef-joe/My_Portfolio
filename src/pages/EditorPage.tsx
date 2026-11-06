@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { marked } from 'marked';
 import SiteHeader from '../components/SiteHeader';
-import { useReveal } from '../components/useReveal';
-import { useLanguage } from '../contexts/LanguageContext';
+import { articles } from '../lib/articles';
+import { contact } from '../data/site';
+
+marked.setOptions({ gfm: true, breaks: false });
+
+interface IpStatus {
+  ip: string;
+  hasIpRestriction: boolean;
+  isAllowed: boolean;
+  message: string;
+}
 
 export default function EditorPage() {
-  useReveal();
-  const { language } = useLanguage();
+  const [mode, setMode] = useState<'create' | 'edit'>('create');
+  const [selectedSlug, setSelectedSlug] = useState<string>('');
+  
+  const [ipStatus, setIpStatus] = useState<IpStatus | null>(null);
+  const [ipLoading, setIpLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     password: '',
@@ -14,142 +28,492 @@ export default function EditorPage() {
     description: '',
     tags: '',
     lang: 'en',
+    cover: '',
     body: '',
   });
 
+  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [responseMsg, setResponseMsg] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  // 1. Check IP Authorization status on mount
+  useEffect(() => {
+    async function checkIp() {
+      try {
+        const res = await fetch('/api/auth-check');
+        if (res.ok) {
+          const data: IpStatus = await res.json();
+          setIpStatus(data);
+        }
+      } catch (e) {
+        console.warn('Could not reach auth-check endpoint', e);
+      } finally {
+        setIpLoading(false);
+      }
+    }
+    checkIp();
+  }, []);
+
+  // 2. Handle switching to edit an existing article
+  const handleSelectArticle = (slug: string) => {
+    setSelectedSlug(slug);
+    if (!slug) {
+      setMode('create');
+      setFormData({
+        password: formData.password,
+        title: '',
+        slug: '',
+        description: '',
+        tags: '',
+        lang: 'en',
+        cover: '',
+        body: '',
+      });
+      return;
+    }
+
+    const target = articles.find((a) => a.slug === slug);
+    if (target) {
+      setMode('edit');
+      setFormData({
+        password: formData.password,
+        title: target.title,
+        slug: target.slug,
+        description: target.description || '',
+        tags: target.tags.join(', '),
+        lang: target.lang || 'en',
+        cover: target.cover || '',
+        body: target.body,
+      });
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
-      // Auto-generate slug from title if slug hasn't been manually touched
-      ...(name === 'title' && !prev.slug ? { slug: value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') } : {})
+      // Auto-generate slug from title in 'create' mode if slug not manually changed
+      ...(name === 'title' && mode === 'create' && !selectedSlug
+        ? {
+            slug: value
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, ''),
+          }
+        : {}),
     }));
   };
+
+  // Quick helper to insert Markdown snippets
+  const insertSnippet = (snippet: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      body: prev.body + (prev.body.endsWith('\n') ? '' : '\n\n') + snippet + '\n',
+    }));
+  };
+
+  const previewHtml = useMemo(() => {
+    try {
+      return marked.parse(formData.body) as string;
+    } catch {
+      return '<p class="text-red-500">Error parsing markdown</p>';
+    }
+  }, [formData.body]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
-    setErrorMessage('');
+    setResponseMsg('');
 
-    const tagsArray = formData.tags.split(',').map(t => t.trim()).filter(Boolean);
+    const tagsArray = formData.tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
 
     try {
       const res = await fetch('/api/publish', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          tags: tagsArray
-        })
+          password: formData.password,
+          title: formData.title,
+          slug: formData.slug,
+          description: formData.description,
+          tags: tagsArray,
+          lang: formData.lang,
+          cover: formData.cover,
+          body: formData.body,
+        }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to publish');
+        throw new Error(data.error || data.details || 'Failed to publish/update');
       }
 
       setStatus('success');
-      // Reset form fields except password
-      setFormData(prev => ({
-        ...prev,
-        title: '',
-        slug: '',
-        description: '',
-        tags: '',
-        body: ''
-      }));
+      setResponseMsg(data.message || 'Operation successful!');
     } catch (err: unknown) {
       console.error(err);
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'Unknown error');
+      setResponseMsg(err instanceof Error ? err.message : 'Unknown error occurred');
     }
   };
 
-  const inputClass = "w-full bg-transparent border border-border-strong p-3 text-text-charcoal focus:outline-none focus:border-accent-teal font-sans";
-  const labelClass = "label block mb-2 text-text-grey";
-
   return (
-    <div style={{ backgroundColor: 'var(--bg-warm-white)', minHeight: '100vh' }}>
+    <div className="portal-frame">
       <SiteHeader />
 
-      <main className="shell" style={{ paddingTop: 'clamp(7rem, 14vh, 11rem)', paddingBottom: 'var(--section-gap)' }}>
-        <p className="label" style={{ marginBottom: '1rem' }}>Admin</p>
-        <h1 className="display" style={{ marginBottom: 'clamp(2.5rem, 6vw, 4.5rem)' }}>
-          Write Article
-        </h1>
+      <main className="p-4 md:p-6 space-y-6">
+        {/* Breadcrumb */}
+        <div className="text-xs font-mono text-[var(--text-sub)] pb-2 border-b border-[var(--border-light)] flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Link to="/" className="text-[var(--link-color)] hover:underline">
+              Portal Index
+            </Link>
+            <span>/</span>
+            <Link to="/writing" className="text-[var(--link-color)] hover:underline">
+              Blog
+            </Link>
+            <span>/</span>
+            <span className="text-[var(--text-main)] font-semibold">cms_studio.exe</span>
+          </div>
+          <span className="badge-retro">
+            <span className="badge-retro-key">ACCESS</span>
+            <span className="badge-retro-val">RESTRICTED</span>
+          </span>
+        </div>
 
-        <form onSubmit={handleSubmit} className="max-w-3xl flex flex-col gap-6 reveal">
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className={labelClass} htmlFor="title">Title</label>
-              <input required type="text" id="title" name="title" value={formData.title} onChange={handleChange} className={inputClass} placeholder="A deep dive into..." />
+        {/* IP Security & Verification Banner */}
+        <div className="border border-[var(--border-main)] bg-[var(--bg-panel)] p-4 shadow-sm">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-3 border-b border-[var(--border-light)] mb-3">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-sm font-bold text-[var(--text-main)]">
+                🛡️ IP SECURITY GATEWAY:
+              </span>
+              {ipLoading ? (
+                <span className="text-xs font-mono text-[var(--text-faint)]">Detecting IP...</span>
+              ) : (
+                <span className="font-mono text-xs px-2 py-0.5 bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-bold">
+                  {ipStatus?.ip || 'Unknown'}
+                </span>
+              )}
             </div>
-            <div>
-              <label className={labelClass} htmlFor="slug">URL Slug</label>
-              <input required type="text" id="slug" name="slug" value={formData.slug} onChange={handleChange} className={inputClass} placeholder="a-deep-dive-into" />
+
+            <div className="flex items-center gap-2 text-xs font-mono">
+              {ipStatus?.hasIpRestriction ? (
+                ipStatus.isAllowed ? (
+                  <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span className="status-dot-online" />
+                    AUTHORIZED IP ACCESS
+                  </span>
+                ) : (
+                  <span className="text-rose-600 font-bold">
+                    ✕ IP NOT AUTHORIZED
+                  </span>
+                )
+              ) : (
+                <span className="text-amber-700 dark:text-amber-400 font-semibold">
+                  ▲ OPEN (SET ALLOWED_IPS IN VERCEL)
+                </span>
+              )}
             </div>
           </div>
 
-          <div>
-            <label className={labelClass} htmlFor="description">Description (optional)</label>
-            <input type="text" id="description" name="description" value={formData.description} onChange={handleChange} className={inputClass} placeholder="Brief summary of the article..." />
+          <div className="text-xs text-[var(--text-sub)] space-y-1">
+            <p>
+              <strong>To lock editing to you alone:</strong> Add{' '}
+              <code className="text-[var(--link-color)] font-mono font-bold">ALLOWED_IPS={ipStatus?.ip || 'YOUR_IP'}</code>{' '}
+              to your Vercel Project Environment Variables. Any request from a different IP address will be instantly rejected with 403 Forbidden.
+            </p>
+          </div>
+        </div>
+
+        {/* Main Editor Card */}
+        <div className="panel-card">
+          <div className="panel-card-header">
+            <div className="panel-title">
+              <span className="text-[var(--accent-red)]">§</span>
+              <span>TECHNICAL CMS STUDIO // {mode === 'create' ? 'CREATE NEW ARTICLE' : `EDIT: ${formData.slug}`}</span>
+            </div>
+
+            {/* Mode switch buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSelectArticle('')}
+                className={`btn-retro text-xs ${mode === 'create' ? 'border-[var(--accent-blue)] font-bold' : ''}`}
+              >
+                ➕ New Article
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className={labelClass} htmlFor="tags">Tags (comma separated)</label>
-              <input type="text" id="tags" name="tags" value={formData.tags} onChange={handleChange} className={inputClass} placeholder="systems, design, os" />
-            </div>
-            <div>
-              <label className={labelClass} htmlFor="lang">Language</label>
-              <select id="lang" name="lang" value={formData.lang} onChange={handleChange} className={inputClass}>
-                <option value="en">English</option>
-                <option value="ar">Arabic</option>
+          <div className="panel-body">
+            
+            {/* Choose Article to Edit Dropdown */}
+            <div className="mb-6 p-3 bg-[var(--bg-subtle)] border border-[var(--border-light)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <label htmlFor="selectArticle" className="text-xs font-bold font-mono text-[var(--text-main)] whitespace-nowrap">
+                Select Article to Edit:
+              </label>
+              <select
+                id="selectArticle"
+                value={selectedSlug}
+                onChange={(e) => handleSelectArticle(e.target.value)}
+                className="w-full sm:max-w-md bg-[var(--bg-surface)] border border-[var(--border-strong)] p-1.5 text-xs text-[var(--text-main)] font-mono"
+              >
+                <option value="">-- [ Create New Article from Scratch ] --</option>
+                {articles.map((art) => (
+                  <option key={art.slug} value={art.slug}>
+                    {art.slug} — {art.title}
+                  </option>
+                ))}
               </select>
             </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="title">
+                    Article Title *
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-blue)]"
+                    placeholder="e.g. SoldierDB: Storage Engine Internals"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="slug">
+                    URL Slug (filename) *
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    id="slug"
+                    name="slug"
+                    value={formData.slug}
+                    onChange={handleChange}
+                    disabled={mode === 'edit'}
+                    className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-mono focus:outline-none focus:border-[var(--accent-blue)] disabled:opacity-60"
+                    placeholder="e.g. soldierdb-storage-engine"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="description">
+                  Short Abstract / Description
+                </label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-blue)]"
+                  placeholder="Summary displayed on homepage and search index..."
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="tags">
+                    Tags (comma separated)
+                  </label>
+                  <input
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleChange}
+                    className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-mono"
+                    placeholder="databases, golang, btree"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="cover">
+                    Schematic SVG / Cover Image (optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="cover"
+                    name="cover"
+                    value={formData.cover}
+                    onChange={handleChange}
+                    className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-mono"
+                    placeholder="/images/blog/btree-architecture.svg"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="lang">
+                    Language
+                  </label>
+                  <select
+                    id="lang"
+                    name="lang"
+                    value={formData.lang}
+                    onChange={handleChange}
+                    className="w-full p-2 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)]"
+                  >
+                    <option value="en">English</option>
+                    <option value="ar">العربية (Arabic)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Editor & Preview Toolbar */}
+              <div className="pt-2 border-t border-[var(--border-light)]">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('edit')}
+                      className={`btn-retro text-xs ${activeTab === 'edit' ? 'border-[var(--accent-blue)] font-bold' : ''}`}
+                    >
+                      ✎ Markdown Source
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('preview')}
+                      className={`btn-retro text-xs ${activeTab === 'preview' ? 'border-[var(--accent-blue)] font-bold' : ''}`}
+                    >
+                      👁 Live Preview
+                    </button>
+                  </div>
+
+                  {/* Snippet insertion shortcuts */}
+                  <div className="flex flex-wrap gap-1 text-[11px] font-mono">
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('![Schematic Diagram](/images/blog/btree-architecture.svg)')}
+                      className="btn-retro text-[10px]"
+                      title="Insert Schematic Image"
+                    >
+                      + Image
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('| Metric | Target | Result |\n| :--- | :--- | :--- |\n| Latency | <200ms | 145ms |')}
+                      className="btn-retro text-[10px]"
+                      title="Insert Table"
+                    >
+                      + Table
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('> **Core Finding**: Description of the discovery or benchmark outcome.')}
+                      className="btn-retro text-[10px]"
+                      title="Insert Key Callout"
+                    >
+                      + Callout
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertSnippet('```go\nfunc Example() error {\n    return nil\n}\n```')}
+                      className="btn-retro text-[10px]"
+                      title="Insert Code Block"
+                    >
+                      + Code
+                    </button>
+                  </div>
+                </div>
+
+                {activeTab === 'edit' ? (
+                  <textarea
+                    required
+                    id="body"
+                    name="body"
+                    value={formData.body}
+                    onChange={handleChange}
+                    rows={18}
+                    className="w-full p-3 font-mono text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-blue)] leading-relaxed"
+                    placeholder="# Article Heading\n\nWrite your technical analysis here in Markdown..."
+                  />
+                ) : (
+                  <div className="p-4 bg-[var(--bg-surface)] border border-[var(--border-strong)] min-h-[300px] overflow-x-auto">
+                    <div
+                      className="article-body prose max-w-none text-xs leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: previewHtml }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Password & Submit Section */}
+              <div className="p-4 bg-[var(--bg-subtle)] border border-[var(--border-light)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
+                <div>
+                  <label className="block text-xs font-mono font-bold text-[var(--text-main)] mb-1" htmlFor="password">
+                    Admin Password (Optional if authorized by IP):
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="p-1.5 text-xs bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-mono w-64"
+                    placeholder="Enter password if configured..."
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="btn-retro text-xs py-2 px-6 font-bold border-[var(--accent-blue)] text-[var(--accent-blue)] hover:bg-[var(--accent-blue)] hover:text-white"
+                  >
+                    {status === 'loading'
+                      ? 'Commiting to GitHub...'
+                      : mode === 'edit'
+                      ? '💾 Save & Update Article'
+                      : '🚀 Publish Article to GitHub'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Status alerts */}
+              {status === 'success' && (
+                <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500 text-emerald-800 dark:text-emerald-300 text-xs flex justify-between items-center">
+                  <span>✔ {responseMsg}</span>
+                  <Link to={`/writing/${formData.slug}`} className="font-bold underline ml-2">
+                    View Published Article ↗
+                  </Link>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="p-3 bg-rose-50 dark:bg-rose-950/40 border border-rose-500 text-rose-800 dark:text-rose-300 text-xs">
+                  ✕ {responseMsg}
+                </div>
+              )}
+
+            </form>
           </div>
+        </div>
 
-          <div>
-            <label className={labelClass} htmlFor="body">Markdown Content</label>
-            <textarea 
-              required 
-              id="body" 
-              name="body" 
-              value={formData.body} 
-              onChange={handleChange} 
-              className={`${inputClass} font-mono text-sm`} 
-              rows={20} 
-              placeholder="Write your article here..." 
-            />
-          </div>
-
-          <div className="border-t border-border-light pt-6 mt-4">
-            <label className={labelClass} htmlFor="password">Admin Password</label>
-            <input required type="password" id="password" name="password" value={formData.password} onChange={handleChange} className={`${inputClass} max-w-sm`} placeholder="Enter secret password to publish" />
-          </div>
-
-          <div className="flex items-center gap-4 mt-4">
-            <button 
-              type="submit" 
-              disabled={status === 'loading'}
-              className="bg-text-charcoal text-bg-warm-white px-8 py-3 text-sm uppercase tracking-widest hover:bg-accent-teal transition-colors duration-300 disabled:opacity-50"
-            >
-              {status === 'loading' ? 'Publishing...' : 'Publish Article'}
-            </button>
-
-            {status === 'success' && <span className="text-accent-teal text-sm font-bold">Published successfully! It will be live in ~30s.</span>}
-            {status === 'error' && <span className="text-red-500 text-sm">{errorMessage}</span>}
-          </div>
-
-        </form>
+        {/* Footer info */}
+        <div className="flex justify-between items-center text-xs text-[var(--text-faint)] font-mono pt-2">
+          <span>Author: {contact.name}</span>
+          <Link to="/writing" className="hover:underline">
+            ← Back to Blog Index
+          </Link>
+        </div>
       </main>
     </div>
   );
