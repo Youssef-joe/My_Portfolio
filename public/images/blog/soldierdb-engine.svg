@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="auto" style="background:#0b1120; border-radius:4px; font-family:Verdana, Geneva, sans-serif;">
+  <defs>
+    <linearGradient id="sGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <filter id="glow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="42" fill="url(#sGrad)"/>
+  <text x="20" y="26" font-size="12" font-weight="bold" fill="#a5b4fc" font-family="'Space Mono', monospace">FIG 2.0 // SOLDIERDB MODULAR ENGINE ARCHITECTURE &amp; C ABI</text>
+  <rect x="710" y="14" width="70" height="16" rx="2" fill="#4f46e5" fill-opacity="0.3"/>
+  <text x="745" y="26" font-size="9" font-family="monospace" fill="#c7d2fe" text-anchor="middle">Rust / C ABI</text>
+
+  <!-- CLIENT INGESTION LAYER -->
+  <g transform="translate(40, 60)" filter="url(#glow)">
+    <rect width="720" height="50" rx="4" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.2"/>
+    <text x="20" y="30" font-size="11" font-weight="bold" fill="#818cf8">CLIENT INTERFACE:</text>
+    <rect x="180" y="12" width="110" height="26" rx="3" fill="#312e81"/>
+    <text x="235" y="29" font-size="10" fill="#ffffff" text-anchor="middle">Go Native App</text>
+    <rect x="310" y="12" width="110" height="26" rx="3" fill="#312e81"/>
+    <text x="365" y="29" font-size="10" fill="#ffffff" text-anchor="middle">Rust Client (FFI)</text>
+    <rect x="440" y="12" width="110" height="26" rx="3" fill="#312e81"/>
+    <text x="495" y="29" font-size="10" fill="#ffffff" text-anchor="middle">C++ Client (ABI)</text>
+    <rect x="570" y="12" width="110" height="26" rx="3" fill="#312e81"/>
+    <text x="625" y="29" font-size="10" fill="#ffffff" text-anchor="middle">Python Bindings</text>
+  </g>
+
+  <path d="M 400 110 L 400 135" stroke="#818cf8" stroke-width="2" stroke-dasharray="2,2"/>
+
+  <!-- SQL & QUERY EXECUTION LAYER -->
+  <g transform="translate(40, 135)" filter="url(#glow)">
+    <rect width="720" height="55" rx="4" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="20" y="32" font-size="11" font-weight="bold" fill="#38bdf8">QUERY EXECUTION:</text>
+    <rect x="180" y="12" width="160" height="30" rx="3" fill="#1e293b"/>
+    <text x="260" y="31" font-size="10" fill="#e2e8f0" text-anchor="middle">Lexer &amp; SQL Parser</text>
+    <rect x="360" y="12" width="160" height="30" rx="3" fill="#1e293b"/>
+    <text x="440" y="31" font-size="10" fill="#e2e8f0" text-anchor="middle">Plan Tree Optimizer</text>
+    <rect x="540" y="12" width="180" height="30" rx="3" fill="#1e293b"/>
+    <text x="630" y="31" font-size="10" fill="#e2e8f0" text-anchor="middle">Volcano Iterator Engine</text>
+  </g>
+
+  <path d="M 400 190 L 400 215" stroke="#38bdf8" stroke-width="2" stroke-dasharray="2,2"/>
+
+  <!-- DUAL INDEX & ENGINE LAYER -->
+  <g transform="translate(40, 215)" filter="url(#glow)">
+    <rect width="720" height="110" rx="4" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.2"/>
+    
+    <!-- Left: Copy-on-Write B+Tree -->
+    <g transform="translate(15, 15)">
+      <rect width="335" height="80" rx="3" fill="#1e293b" stroke="#10b981" stroke-width="1"/>
+      <text x="15" y="24" font-size="11" font-weight="bold" fill="#34d399">1. COPY-ON-WRITE B+TREE ENGINE</text>
+      <text x="15" y="44" font-size="9" fill="#94a3b8">• Path Copying from Root to Leaf (No Latch Contention)</text>
+      <text x="15" y="60" font-size="9" fill="#94a3b8">• ACID Snapshot Isolation for Concurrent Readers</text>
+      <text x="15" y="74" font-size="9" fill="#94a3b8">• Guaranteed Crash Invariance via Atomic Pointer Swaps</text>
+    </g>
+
+    <!-- Right: Vector Similarity Search -->
+    <g transform="translate(370, 15)">
+      <rect width="335" height="80" rx="3" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+      <text x="15" y="24" font-size="11" font-weight="bold" fill="#fbbf24">2. EMBEDDINGS &amp; VECTOR SEARCH</text>
+      <text x="15" y="44" font-size="9" fill="#94a3b8">• Fixed-Dimension Float32 Vector Columns</text>
+      <text x="15" y="60" font-size="9" fill="#94a3b8">• SIMD-Optimized Cosine Distance Calculation</text>
+      <text x="15" y="74" font-size="9" fill="#94a3b8">• Top-K Exact KNN Retrieval over Partitioned Sets</text>
+    </g>
+  </g>
+
+  <path d="M 400 325 L 400 350" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="2,2"/>
+
+  <!-- STORAGE, WAL & BUFFER POOL -->
+  <g transform="translate(40, 350)" filter="url(#glow)">
+    <rect width="720" height="70" rx="4" fill="#1e293b" stroke="#e2e8f0" stroke-width="1.2"/>
+    <text x="20" y="28" font-size="11" font-weight="bold" fill="#f8fafc">PERSISTENCE &amp; RECOVERY:</text>
+    
+    <rect x="220" y="14" width="220" height="42" rx="3" fill="#0f172a" stroke="#f43f5e" stroke-width="1"/>
+    <text x="330" y="32" font-size="10" font-weight="bold" fill="#f43f5e" text-anchor="middle">Write-Ahead Log (WAL)</text>
+    <text x="330" y="46" font-size="8" fill="#94a3b8" text-anchor="middle">Append-only fsync log records</text>
+
+    <rect x="460" y="14" width="240" height="42" rx="3" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+    <text x="580" y="32" font-size="10" font-weight="bold" fill="#34d399" text-anchor="middle">4KB Slotted Page Manager</text>
+    <text x="580" y="46" font-size="8" fill="#94a3b8" text-anchor="middle">Direct page serialization to disk</text>
+  </g>
+</svg>

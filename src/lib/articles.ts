@@ -21,6 +21,7 @@ export interface Article {
   slug: string;
   title: string;
   description: string;
+  cover?: string;
   date: string;
   /** Parsed from `date`, used for sorting. */
   timestamp: number;
@@ -90,6 +91,7 @@ function build(): Article[] {
         slug,
         title: meta.title || slug,
         description: meta.description || '',
+        cover: meta.cover || undefined,
         date,
         timestamp: Number.isNaN(parsed) ? 0 : parsed,
         tags: parseList(meta.tags),

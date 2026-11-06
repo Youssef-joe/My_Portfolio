@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="auto" style="background:#090d16; border-radius:4px; font-family:Verdana, Geneva, sans-serif;">
+  <defs>
+    <linearGradient id="pGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14532d"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <filter id="pGlow">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Title bar -->
+  <rect x="0" y="0" width="800" height="42" fill="url(#pGrad)"/>
+  <text x="20" y="26" font-size="12" font-weight="bold" fill="#86efac" font-family="'Space Mono', monospace">FIG 3.0 // PEERTRUST BENCHMARK VALIDATION WORKFLOW — SCIENCEWERX</text>
+  <rect x="680" y="14" width="100" height="16" rx="2" fill="#22c55e" fill-opacity="0.25"/>
+  <text x="730" y="26" font-size="9" font-family="monospace" fill="#86efac" text-anchor="middle">Zenodo Verified</text>
+
+  <!-- STEP 1: COHORT CURATION -->
+  <g transform="translate(40, 65)" filter="url(#pGlow)">
+    <rect width="210" height="140" rx="4" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect width="210" height="24" rx="4" fill="#1d4ed8"/>
+    <text x="105" y="16" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">1. COHORT INGESTION</text>
+    
+    <text x="15" y="48" font-size="10" font-weight="bold" fill="#60a5fa">• 268 Researches</text>
+    <text x="25" y="64" font-size="9" fill="#94a3b8">ORCID-resolved identity</text>
+    <text x="15" y="86" font-size="10" font-weight="bold" fill="#60a5fa">• Citation Metadata</text>
+    <text x="25" y="102" font-size="9" fill="#94a3b8">OpenAlex / Crossref feeds</text>
+    <text x="15" y="124" font-size="9" fill="#10b981">260 Scored Profiles</text>
+  </g>
+
+  <!-- Connectors to Parallel Engines -->
+  <path d="M 250 115 L 320 90" stroke="#38bdf8" stroke-width="2"/>
+  <path d="M 250 155 L 320 180" stroke="#38bdf8" stroke-width="2"/>
+
+  <!-- STEP 2: DUAL BENCHMARK ENGINES -->
+  <g transform="translate(320, 55)" filter="url(#pGlow)">
+    <rect width="230" height="70" rx="4" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.5"/>
+    <text x="15" y="22" font-size="10" font-weight="bold" fill="#38bdf8">PRODUCTION ENGINE (SW)</text>
+    <text x="15" y="42" font-size="9" fill="#e2e8f0">• High-Throughput Production Service</text>
+    <text x="15" y="58" font-size="9" fill="#94a3b8">• Multi-factor Forensic Indicators</text>
+  </g>
+
+  <g transform="translate(320, 145)" filter="url(#pGlow)">
+    <rect width="230" height="70" rx="4" fill="#0f172a" stroke="#eab308" stroke-width="1.5"/>
+    <text x="15" y="22" font-size="10" font-weight="bold" fill="#facc15">REFERENCE REIMPLEMENTATION</text>
+    <text x="15" y="42" font-size="9" fill="#e2e8f0">• Independent Python Pipeline</text>
+    <text x="15" y="58" font-size="9" fill="#94a3b8">• First-Principles Mathematical Verification</text>
+  </g>
+
+  <!-- Connectors to Validation Concordance -->
+  <path d="M 550 90 L 610 115" stroke="#10b981" stroke-width="2"/>
+  <path d="M 550 180 L 610 155" stroke="#10b981" stroke-width="2"/>
+
+  <!-- STEP 3: CONCORDANCE RESULTS -->
+  <g transform="translate(610, 65)" filter="url(#pGlow)">
+    <rect width="150" height="140" rx="4" fill="#064e3b" stroke="#10b981" stroke-width="1.8"/>
+    <rect width="150" height="24" rx="4" fill="#047857"/>
+    <text x="75" y="16" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">VERIFICATION</text>
+
+    <text x="75" y="52" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">100%</text>
+    <text x="75" y="68" font-size="8" fill="#a7f3d0" text-anchor="middle">Verdict Concordance</text>
+    <text x="75" y="80" font-size="7" fill="#6ee7b7" text-anchor="middle">(260 of 260 matched)</text>
+
+    <text x="75" y="106" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">99.2%</text>
+    <text x="75" y="122" font-size="8" fill="#a7f3d0" text-anchor="middle">Exact Numerical Match</text>
+  </g>
+
+  <!-- FORENSIC METRICS GRID -->
+  <g transform="translate(40, 230)">
+    <rect width="720" height="190" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+    <text x="20" y="25" font-size="11" font-weight="bold" fill="#e2e8f0">CORE CITATION FORENSICS SCREENING METRICS DETECTED:</text>
+    
+    <g transform="translate(20, 40)">
+      <!-- Metric 1 -->
+      <rect x="0" y="0" width="215" height="130" rx="3" fill="#1e293b" stroke="#334155"/>
+      <text x="15" y="24" font-size="11" font-weight="bold" fill="#38bdf8">1. Reciprocal Cartels</text>
+      <text x="15" y="44" font-size="9" fill="#cbd5e1">Graph clustering that uncovers closed reference rings where Author A cites B and B cites A synchronously without thematic relevance.</text>
+      <rect x="15" y="95" width="185" height="20" rx="2" fill="#0f172a"/>
+      <text x="25" y="109" font-size="8" fill="#38bdf8">Graph Spectral Clustering</text>
+    </g>
+
+    <g transform="translate(252, 40)">
+      <!-- Metric 2 -->
+      <rect x="0" y="0" width="215" height="130" rx="3" fill="#1e293b" stroke="#334155"/>
+      <text x="15" y="24" font-size="11" font-weight="bold" fill="#f59e0b">2. Self-Citation Velocity</text>
+      <text x="15" y="44" font-size="9" fill="#cbd5e1">Surges in self-referencing percentages compared to baseline distributions across ORCID career age and discipline norms.</text>
+      <rect x="15" y="95" width="185" height="20" rx="2" fill="#0f172a"/>
+      <text x="25" y="109" font-size="8" fill="#f59e0b">Velocity Threshold z-score</text>
+    </g>
+
+    <g transform="translate(485, 40)">
+      <!-- Metric 3 -->
+      <rect x="0" y="0" width="215" height="130" rx="3" fill="#1e293b" stroke="#334155"/>
+      <text x="15" y="24" font-size="11" font-weight="bold" fill="#10b981">3. Co-Author Inflation</text>
+      <text x="15" y="44" font-size="9" fill="#cbd5e1">Artificial reference stuffing in conference proceedings and predatory journals to manipulate academic indices.</text>
+      <rect x="15" y="95" width="185" height="20" rx="2" fill="#0f172a"/>
+      <text x="25" y="109" font-size="8" fill="#10b981">Hyper-inflation Detector</text>
+    </g>
+  </g>
+</svg>
