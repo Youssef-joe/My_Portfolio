@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { marked } from 'marked';
-import gsap from 'gsap';
+import SiteHeader from '../components/SiteHeader';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getArticle, formatDate } from '../lib/articles';
 import { ui } from '../data/site';
@@ -27,22 +27,6 @@ export default function ArticleReader() {
     return () => {
       document.title = 'Youssef Ali Ahmed — Systems Engineer';
     };
-  }, [article]);
-
-  useEffect(() => {
-    if (article && titleRef.current && contentRef.current) {
-      const tl = gsap.timeline();
-      tl.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }
-      ).fromTo(
-        contentRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-        '-=0.6'
-      );
-    }
   }, [article]);
 
   if (!article) {

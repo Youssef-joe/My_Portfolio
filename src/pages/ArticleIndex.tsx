@@ -1,65 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SiteHeader from '../components/SiteHeader';
 import { useLanguage } from '../contexts/LanguageContext';
 import { articles, formatDate } from '../lib/articles';
 import { ui } from '../data/site';
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function ArticleIndex() {
   const { language } = useLanguage();
   const t = ui[language];
-  const isRTL = language === 'ar';
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const artworkRef = useRef<HTMLImageElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-
-  useEffect(() => {
-    // Parallax artwork and title fade
-    gsap.to(artworkRef.current, {
-      yPercent: 30,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
-
-    gsap.to(titleRef.current, {
-      opacity: 0,
-      y: 100,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
-
-    // Staggered reveal for chapter cards
-    gsap.fromTo(
-      cardsRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.chapters-grid',
-          start: 'top 80%',
-        },
-      }
-    );
-  }, []);
 
   return (
     <div className="portal-frame">
