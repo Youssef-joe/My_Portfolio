@@ -548,7 +548,7 @@ export interface EraItem {
 export const eras: EraItem[] = [
   {
     id: 'early-years',
-    image: '/classical_portrait.jpg',
+    image: '/images/era_1.jpeg',
     title: 'THE BEGINNING // RENAISSANCE',
     subtitle: 'Chapter 001',
     en: {
@@ -564,7 +564,7 @@ export const eras: EraItem[] = [
   },
   {
     id: 'the-builder',
-    image: '/era_2_victorian.jpg',
+    image: '/images/era_2.jpeg',
     title: 'THE ASCENT // INDUSTRIAL FORGE',
     subtitle: 'Chapter 002',
     en: {
@@ -580,7 +580,7 @@ export const eras: EraItem[] = [
   },
   {
     id: 'the-architect',
-    image: '/era_3_rococo.jpg',
+    image: '/images/era_3.jpeg',
     title: 'THE VISION // FRONTIER CRAFT',
     subtitle: 'Chapter 003',
     en: {

@@ -78,20 +78,20 @@ export default function GallerySection() {
                   {/* Era thumbnails preview */}
                   <div className="mt-4 pt-4 border-t border-[#3a3015]">
                     <div className="text-[11px] font-mono text-[#a3946c] uppercase tracking-wider mb-2">
-                      Companion Exhibition Eras:
+                      Chronicle Eras (Real Photo Archive):
                     </div>
                     <div className="grid grid-cols-3 gap-3">
                       <div className="border border-[#5c4a1e] p-1 bg-[#15130b] text-center">
-                        <img src="/classical_portrait.jpg" alt="Renaissance" className="h-16 w-full object-cover mb-1" />
-                        <span className="text-[10px] font-mono text-[#d4af37] block">I. Renaissance</span>
+                        <img src="/images/era_1.jpeg" alt="Chapter 1" className="h-16 w-full object-cover mb-1" />
+                        <span className="text-[10px] font-mono text-[#d4af37] block">I. Beginning</span>
                       </div>
                       <div className="border border-[#5c4a1e] p-1 bg-[#15130b] text-center">
-                        <img src="/era_2_victorian.jpg" alt="Victorian" className="h-16 w-full object-cover mb-1" />
-                        <span className="text-[10px] font-mono text-[#d4af37] block">II. Industrial</span>
+                        <img src="/images/era_2.jpeg" alt="Chapter 2" className="h-16 w-full object-cover mb-1" />
+                        <span className="text-[10px] font-mono text-[#d4af37] block">II. Ascent</span>
                       </div>
                       <div className="border border-[#5c4a1e] p-1 bg-[#15130b] text-center">
-                        <img src="/era_3_rococo.jpg" alt="Rococo" className="h-16 w-full object-cover mb-1" />
-                        <span className="text-[10px] font-mono text-[#d4af37] block">III. Frontier</span>
+                        <img src="/images/era_3.jpeg" alt="Chapter 3" className="h-16 w-full object-cover mb-1" />
+                        <span className="text-[10px] font-mono text-[#d4af37] block">III. Vision</span>
                       </div>
                     </div>
                   </div>

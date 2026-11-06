@@ -41,12 +41,12 @@ export default function StoryPage() {
               <div className="lg:col-span-5">
                 <div className="border-2 border-[var(--border-strong)] bg-black p-1 shadow-lg">
                   <img
-                    src="/images/art_deco_wisdom_hero.jpg"
-                    alt="Allegory of Wisdom"
+                    src="/LinkedInPic.jpeg"
+                    alt="Youssef Ali Ahmed"
                     className="w-full h-auto object-cover"
                   />
                   <div className="text-[10px] font-mono text-center text-white/80 py-1 bg-black">
-                    Plate 01: Allegory of Wisdom & Mechanical Order
+                    Youssef Ali Ahmed // Systems Engineer & R&D Analyst
                   </div>
                 </div>
               </div>

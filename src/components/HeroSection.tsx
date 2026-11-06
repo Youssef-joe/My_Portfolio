@@ -15,9 +15,9 @@ export default function HeroSection() {
           <div className="border border-[var(--border-main)] bg-[var(--bg-surface)] p-3 shadow-sm">
             <div className="relative aspect-[4/5] bg-gray-100 overflow-hidden border border-[var(--border-strong)]">
               <img
-                src="/classical_portrait.jpg"
+                src="/LinkedInPic.jpeg"
                 alt="Youssef Ali Portrait"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-center"
               />
               <div className="absolute bottom-0 inset-x-0 bg-black/75 text-white text-[10px] font-mono px-2 py-1 text-center">
                 Youssef Ali Ahmed // Systems & R&D
