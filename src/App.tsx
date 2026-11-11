@@ -10,6 +10,7 @@ import GallerySection from './components/GallerySection';
 import StorySection from './components/StorySection';
 import CVSection from './components/CVSection';
 import ContactSection from './components/ContactSection';
+import { MarqueeTicker } from './components/ArtMotifs';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { ui } from './data/site';
@@ -25,28 +26,34 @@ function HomePage() {
   const t = ui[language];
 
   return (
-    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)] transition-colors duration-300">
-      <a
-        href="#about"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:p-2 focus:bg-white focus:text-black focus:border"
-      >
-        {t.skipToContent}
-      </a>
+    <div className="bg-[#f4cb38] p-2 sm:p-4 md:p-6 lg:p-8 min-h-screen selection:bg-[#ff5500] selection:text-white transition-colors duration-300">
+      
+      {/* Outer Black Poster Frame */}
+      <div className="bg-black text-white border-4 border-black shadow-[10px_10px_0px_0px_#000000] overflow-hidden">
+        <a
+          href="#about"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:p-3 focus:bg-[#f4cb38] focus:text-black focus:font-bold focus:border-2 focus:border-black"
+        >
+          {t.skipToContent}
+        </a>
 
-      <SiteHeader />
+        <SiteHeader />
 
-      <main className="space-y-4">
-        <HeroSection />
-        <AboutSection />
-        <WorkSection />
-        <PublicationsSection />
-        <GallerySection />
-        <StorySection />
-        <WritingSection />
-        <ExperienceSection />
-        <CVSection />
-        <ContactSection />
-      </main>
+        <main>
+          <HeroSection />
+          <MarqueeTicker text="CORE SYSTEMS // SOLDIERDB B+TREE STORAGE // RISC-V SV32 KERNEL // POSTGRESQL IN C // PEERTRUST FORENSICS // SCIENCEWERX R&D //" />
+          <AboutSection />
+          <WorkSection />
+          <PublicationsSection />
+          <GallerySection />
+          <StorySection />
+          <WritingSection />
+          <ExperienceSection />
+          <CVSection />
+          <ContactSection />
+        </main>
+      </div>
+
     </div>
   );
 }

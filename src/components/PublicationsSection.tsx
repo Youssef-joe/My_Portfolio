@@ -1,6 +1,6 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { publications, ui, contact } from '../data/site';
-import { SparkleStar, EllipticalTag } from './ArtMotifs';
+import { LaptopMockup, BulletTag } from './ArtMotifs';
 
 export default function PublicationsSection() {
   const { language } = useLanguage();
@@ -8,169 +8,143 @@ export default function PublicationsSection() {
   const pub = publications[0];
 
   return (
-    <section id="publications" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section id="publications" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-black text-white border-b-4 border-black">
+      <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* ============================================================ */}
-        {/* MONOGRAPH PLATE 03: Forensic Science (Snapshot 5 Style)       */}
-        {/* ============================================================ */}
-        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#141829] text-white">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b-4 border-white/20 pb-6">
+          <div>
+            <span className="font-mono text-xs uppercase tracking-widest text-[#f4cb38] font-bold">
+              EMPIRICAL RESEARCH &bull; FIRST-AUTHOR PUBLICATION
+            </span>
+            <h2 className="font-display text-4xl sm:text-6xl uppercase tracking-tight text-white mt-1">
+              PEERTRUST CITATION FORENSICS
+            </h2>
+          </div>
+          <span className="font-mono text-xs text-white/60">
+            ScienceWerx Inc. &bull; KNOWDYN LTD &bull; Zenodo DOI
+          </span>
+        </div>
+
+        {/* Master Two-Column Grid: Narrative on Left, Laptop Mockup on Right (Snapshot Middle-Right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Top Banner Bar (Snapshot 5 Header) */}
-          <div className="bg-[#0f1322] px-6 sm:px-12 py-8 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-              {/* Massive 03 Number */}
-              <div className="flex items-center gap-3">
-                <span className="chapter-number text-white font-serif">03</span>
-                <SparkleStar size={18} color="#818cf8" />
+          {/* Left Column: Research Narrative & Detection Vectors */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 bg-[#f4cb38] text-black font-mono font-bold text-xs uppercase">
+                FIRST AUTHOR
+              </span>
+              <span className="font-mono text-xs text-white/70">
+                DOI: {pub.doi}
+              </span>
+            </div>
+
+            <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-white leading-tight">
+              {pub.title}
+            </h3>
+
+            <p className="font-grotesk text-sm sm:text-base text-white/80 leading-relaxed">
+              {pub.abstract}
+            </p>
+
+            {/* 3 Fraud Vectors */}
+            <div className="space-y-3 font-mono text-xs pt-2">
+              <div className="p-3 bg-white/5 border border-white/10 flex items-start gap-3">
+                <span className="font-display text-lg text-[#f4cb38] leading-none">01</span>
+                <div>
+                  <div className="font-bold text-white uppercase">Reciprocal Citation Cartels</div>
+                  <div className="text-white/70 text-[11px] mt-0.5">
+                    Spectral graph clustering isolating author cliques trading mutual unmerited citations.
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
-                  PeerTrust Citation-Forensics
-                </h3>
-                <div className="text-xs font-mono text-[#818cf8]">
-                  Empirical Science &bull; First-Author Publication &bull; ScienceWerx
+              <div className="p-3 bg-white/5 border border-white/10 flex items-start gap-3">
+                <span className="font-display text-lg text-[#f4cb38] leading-none">02</span>
+                <div>
+                  <div className="font-bold text-white uppercase">Self-Citation Velocity Spikes</div>
+                  <div className="text-white/70 text-[11px] mt-0.5">
+                    Statistical burst-detection algorithm detecting unnatural surges of self-citations.
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-white/5 border border-white/10 flex items-start gap-3">
+                <span className="font-display text-lg text-[#f4cb38] leading-none">03</span>
+                <div>
+                  <div className="font-bold text-white uppercase">Co-Authorship Inflation Rings</div>
+                  <div className="text-white/70 text-[11px] mt-0.5">
+                    Graph degree entropy analysis uncovering fraudulent peer-review citation syndicates.
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Elliptical Tags + Contact on Right */}
-            <div className="flex flex-wrap items-center gap-3">
-              <EllipticalTag starColor="#818cf8">Graph Spectral Forensics</EllipticalTag>
-              <EllipticalTag starColor="#818cf8">Dual-Engine Python &amp; Go</EllipticalTag>
-
-              <div className="hidden xl:flex items-center gap-2 pl-4 border-l border-white/15 text-xs font-sans text-white/70">
-                <span>{contact.email}</span>
-              </div>
+            {/* Action CTA */}
+            <div className="pt-4 flex flex-wrap items-center gap-4">
+              <a
+                href={pub.doiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-[#f4cb38] hover:bg-[#e0b828] text-black font-mono font-bold text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_0px_#fff] transition-all"
+              >
+                Open Zenodo Publication DOI ↗
+              </a>
+              <span className="font-mono text-xs text-white/60">
+                N = 268 Profiles Scored
+              </span>
             </div>
           </div>
 
-          {/* Two-Column Body (Snapshot 5) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12">
-            
-            {/* Left Column: Forensic Signals & Paper Abstract */}
-            <div className="lg:col-span-6 p-8 sm:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-between bg-gradient-to-br from-[#161c33] to-[#111526]">
-              <div>
-                <div className="text-xs font-mono tracking-widest text-[#818cf8] uppercase mb-3 flex items-center gap-2">
-                  <SparkleStar size={11} color="#818cf8" />
-                  <span>CITATION FRAUD DETECTION VECTORS</span>
-                </div>
-
-                <h4 className="font-serif text-xl sm:text-2xl font-bold text-white mb-4 leading-snug">
-                  {pub.title}
-                </h4>
-
-                <p className="font-sans text-sm sm:text-base text-white/85 leading-relaxed mb-6 font-normal">
-                  {pub.abstract}
-                </p>
-
-                {/* 3 Forensic Signals List */}
-                <div className="space-y-3 font-sans text-xs">
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex gap-3">
-                    <span className="font-serif font-bold text-[#818cf8] text-base">01</span>
-                    <div>
-                      <div className="font-bold text-white mb-0.5">Reciprocal Citation Cartels</div>
-                      <div className="text-white/70">Spectral graph clustering pinpoints author cliques trading mutual unmerited citations.</div>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex gap-3">
-                    <span className="font-serif font-bold text-[#818cf8] text-base">02</span>
-                    <div>
-                      <div className="font-bold text-white mb-0.5">Self-Citation Velocity Spikes</div>
-                      <div className="text-white/70">Statistical burst-detection algorithm isolating unnatural surges of self-citations.</div>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 flex gap-3">
-                    <span className="font-serif font-bold text-[#818cf8] text-base">03</span>
-                    <div>
-                      <div className="font-bold text-white mb-0.5">Co-Authorship Inflation Rings</div>
-                      <div className="text-white/70">Graph degree entropy analysis uncovering fraudulent peer-review citation trades.</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action DOI link */}
-              <div className="pt-8 border-t border-white/10 mt-8 flex flex-wrap items-center justify-between gap-4">
-                <a
-                  href={pub.doiUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-2.5 rounded-full bg-[#818cf8] hover:bg-[#6366f1] text-[#0f1322] font-semibold text-xs tracking-wider transition-all duration-200 flex items-center gap-2 shadow-lg"
-                >
-                  <span>Open Zenodo Publication DOI</span>
-                  <span>↗</span>
-                </a>
-                <span className="font-mono text-xs text-white/50">doi: {pub.doi}</span>
-              </div>
-            </div>
-
-            {/* Right Column: Visual Schematic & Empirical Benchmark Matrix */}
-            <div className="lg:col-span-6 p-8 sm:p-12 flex flex-col justify-between bg-gradient-to-br from-[#121629] to-[#0a0d18]">
-              <div>
-                <div className="text-xs font-mono tracking-widest text-[#f4d38c] uppercase mb-4 flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <SparkleStar size={11} color="#f4d38c" />
-                    <span>DUAL-ENGINE AGREEMENT METRICS</span>
-                  </span>
-                  <span className="text-white/50">N = 268 Profiles</span>
-                </div>
-
+          {/* Right Column: Realistic Laptop Mockup (Snapshot Style: THE MASTER) */}
+          <div className="lg:col-span-6">
+            <LaptopMockup title="PEERTRUST FORENSICS // ENGINE" badge="ZENODO VERIFIED">
+              <div className="w-full h-full flex flex-col justify-between space-y-2">
                 {/* Forensic Schematic Image */}
-                <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-4 mb-6 group overflow-hidden">
+                <div className="relative rounded overflow-hidden bg-[#0d0e12] border border-white/10 p-2 flex items-center justify-center">
                   <img
                     src="/images/blog/peertrust-forensics.svg"
                     alt="PeerTrust Spectral Graph Clustering & Citation Forensics"
-                    className="w-full h-auto max-h-[260px] object-contain group-hover:scale-[1.02] transition-transform duration-500"
+                    className="w-full h-auto max-h-[170px] sm:max-h-[200px] object-contain"
                   />
-                  <div className="mt-2 text-[10px] font-mono text-center text-white/50">
-                    Dual-Engine Architecture: Go Core API + Python Scipy Verification
-                  </div>
                 </div>
 
-                {/* Validation Benchmark Table */}
-                <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5">
-                  <table className="w-full text-xs font-mono text-left">
+                {/* Validation Benchmark Concordance Table */}
+                <div className="overflow-x-auto rounded border border-white/10 bg-white/5">
+                  <table className="w-full text-[10px] font-mono text-left">
                     <thead>
-                      <tr className="border-b border-white/15 bg-white/5 text-[#818cf8]">
-                        <th className="p-3">METRIC</th>
-                        <th className="p-3">PRODUCTION GO</th>
-                        <th className="p-3">BENCHMARK PYTHON</th>
-                        <th className="p-3 text-right">CONCORDANCE</th>
+                      <tr className="border-b border-white/15 bg-white/5 text-[#f4cb38]">
+                        <th className="p-2">METRIC</th>
+                        <th className="p-2">PRODUCTION GO</th>
+                        <th className="p-2">BENCHMARK PY</th>
+                        <th className="p-2 text-right">AGREEMENT</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/10 text-white/90">
+                    <tbody className="divide-y divide-white/10 text-white/80">
                       <tr>
-                        <td className="p-3 font-semibold text-white">Screened Profiles</td>
-                        <td className="p-3 text-white/70">268 Profiles</td>
-                        <td className="p-3 text-white/70">268 Profiles</td>
-                        <td className="p-3 font-bold text-emerald-400 text-right">100%</td>
+                        <td className="p-2 font-bold text-white">ORCID Profiles</td>
+                        <td className="p-2">268</td>
+                        <td className="p-2">268</td>
+                        <td className="p-2 font-bold text-emerald-400 text-right">100%</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-white">Full Scoring Verdict</td>
-                        <td className="p-3 text-white/70">260 Verdicts</td>
-                        <td className="p-3 text-white/70">260 Verdicts</td>
-                        <td className="p-3 font-bold text-emerald-400 text-right">100% Exact</td>
+                        <td className="p-2 font-bold text-white">Scoring Verdict</td>
+                        <td className="p-2">260</td>
+                        <td className="p-2">260</td>
+                        <td className="p-2 font-bold text-emerald-400 text-right">100% Exact</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-white">Numerical Match</td>
-                        <td className="p-3 text-white/70">Multi-Decimal</td>
-                        <td className="p-3 text-white/70">Multi-Decimal</td>
-                        <td className="p-3 font-bold text-emerald-400 text-right">99.2% Match</td>
+                        <td className="p-2 font-bold text-white">Numeric Match</td>
+                        <td className="p-2">Multi-Dec</td>
+                        <td className="p-2">Multi-Dec</td>
+                        <td className="p-2 font-bold text-emerald-400 text-right">99.2%</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-
-              <div className="mt-6 pt-4 border-t border-white/10 text-xs font-sans text-white/60">
-                Institutional Affiliation: <strong>ScienceWerx Inc. &amp; KNOWDYN LTD</strong> &bull; First Author: <strong>Youssef Ali</strong>
-              </div>
-            </div>
-
+            </LaptopMockup>
           </div>
 
         </div>

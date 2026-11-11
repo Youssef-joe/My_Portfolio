@@ -1,141 +1,137 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { contact, ui } from '../data/site';
-import { SparkleStar, EllipticalTag } from './ArtMotifs';
+import { HeroCharacterBox, BulletTag } from './ArtMotifs';
 
 export default function ContactSection() {
   const { language } = useLanguage();
   const t = ui[language];
 
-  const channels = [
-    {
-      label: 'Email Transmission',
-      value: contact.email,
-      href: `mailto:${contact.email}`,
-      actionText: 'Send Direct Email',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-          <polyline points="22,6 12,13 2,6" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Phone & WhatsApp',
-      value: contact.phone,
-      href: `tel:${contact.phone.replace(/\s+/g, '')}`,
-      actionText: 'Call / WhatsApp',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-        </svg>
-      ),
-    },
-    {
-      label: 'GitHub Repositories',
-      value: 'github.com/youssef-joe',
-      href: contact.github,
-      actionText: 'Inspect Repos',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Professional LinkedIn',
-      value: 'linkedin.com/in/youssef-ali',
-      href: contact.linkedin,
-      actionText: 'Connect on LinkedIn',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-          <rect x="2" y="9" width="4" height="12" />
-          <circle cx="4" cy="4" r="2" />
-        </svg>
-      ),
-    },
-  ];
-
   return (
-    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-black text-white relative overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto space-y-12">
         
-        {/* ============================================================ */}
-        {/* MONOGRAPH PLATE 09: Contact & Transmission                   */}
-        {/* ============================================================ */}
-        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#ea5e24] text-white">
+        {/* Top Tagline */}
+        <div className="text-center space-y-2">
+          <span className="font-mono text-xs uppercase tracking-widest text-[#f4cb38] font-bold px-3 py-1 bg-white/5 border border-white/10 rounded-sm">
+            AVAILABLE FOR CORE SYSTEMS, RESEARCH &amp; BACK-END ARCHITECTURE
+          </span>
+          <p className="font-grotesk text-sm sm:text-base text-white/80 max-w-xl mx-auto pt-2">
+            Open to engineering conversations about database engines, PostgreSQL internals, kernel design, and empirical research.
+          </p>
+        </div>
+
+        {/* Master "LET'S WORK" Graphic Stack (From Bottom-Right of Reference Image) */}
+        <div className="relative my-8 sm:my-14 flex items-center justify-center">
           
-          <div className="p-8 sm:p-14 lg:p-16">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="chapter-number text-white font-serif">09</span>
-                <SparkleStar size={20} color="#ffffff" />
-                <span className="text-xs font-mono text-white/80 tracking-widest uppercase">
-                  Direct Channel
-                </span>
-              </div>
+          {/* GIGANTIC CONDENSED LETTERS: LET'S WORK */}
+          <h2 className="font-display text-[14vw] sm:text-[16vw] font-bold text-white tracking-tighter leading-none select-none text-center uppercase whitespace-nowrap opacity-95">
+            LET'S WORK
+          </h2>
 
-              <h3 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-none">
-                {language === 'ar' ? 'لنبنِ برمجيات ذات صلابة رياضية وميكانيكية.' : 'Let’s Build Something With Permanent Integrity.'}
-              </h3>
-
-              <p className="font-serif text-lg sm:text-xl text-white/90 italic leading-relaxed mb-10">
-                "{t.contactLead}"
-              </p>
+          {/* Overlapping Character Box Peeking Through Letters (Snapshot Style) */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="hover:scale-105 transition-transform duration-300 pointer-events-auto">
+              <HeroCharacterBox size={180} className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 shadow-[6px_6px_0px_0px_#f4cb38]" />
             </div>
-
-            {/* Channels Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-              {channels.map((ch, idx) => (
-                <a
-                  key={idx}
-                  href={ch.href}
-                  target={ch.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  className="p-5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] flex flex-col justify-between group shadow-md"
-                >
-                  <div>
-                    <div className="flex items-center justify-between text-white/80 mb-3">
-                      <span className="p-2 rounded-xl bg-white/10 group-hover:bg-white/20 transition-colors">
-                        {ch.icon}
-                      </span>
-                      <SparkleStar size={12} color="#ffffff" className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-
-                    <div className="font-mono text-xs text-white/70">
-                      {ch.label}
-                    </div>
-
-                    <div className="font-sans font-bold text-sm text-white mt-1 break-all">
-                      {ch.value}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-white/15 text-xs font-mono text-white/90 group-hover:text-white flex items-center justify-between">
-                    <span>{ch.actionText}</span>
-                    <span>↗</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            {/* Footer Bottom Bar */}
-            <div className="pt-8 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-white/75">
-              <div className="flex items-center gap-2">
-                <span>&copy; 2026 {contact.name}. All Rights Reserved.</span>
-              </div>
-
-              <a
-                href="#top"
-                className="hover:text-white hover:underline flex items-center gap-1.5"
-              >
-                <span>↑ Top of Monograph</span>
-                <SparkleStar size={10} color="#ffffff" />
-              </a>
-            </div>
-
           </div>
 
+        </div>
+
+        {/* Transmission Coordinates Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+          
+          {/* Email */}
+          <a
+            href={`mailto:${contact.email}`}
+            className="bg-[#121316] border-4 border-black p-6 shadow-[6px_6px_0px_0px_#ff5500] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#f4cb38] transition-all group block"
+          >
+            <div className="font-mono text-[10px] text-[#ff5500] font-bold uppercase mb-1">
+              DIRECT TRANSMISSION
+            </div>
+            <div className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[#f4cb38] transition-colors truncate">
+              Email Desk
+            </div>
+            <div className="font-grotesk text-xs text-white/70 mt-2 truncate">
+              {contact.email}
+            </div>
+            <div className="mt-4 font-mono text-xs font-bold text-[#ff5500] uppercase">
+              Send Message ↗
+            </div>
+          </a>
+
+          {/* Phone / WhatsApp */}
+          <a
+            href={`tel:${contact.phone.replace(/\s+/g, '')}`}
+            className="bg-[#121316] border-4 border-black p-6 shadow-[6px_6px_0px_0px_#f4cb38] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#ff5500] transition-all group block"
+          >
+            <div className="font-mono text-[10px] text-[#f4cb38] font-bold uppercase mb-1">
+              VOICE &bull; WHATSAPP
+            </div>
+            <div className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[#f4cb38] transition-colors truncate">
+              Telephone
+            </div>
+            <div className="font-grotesk text-xs text-white/70 mt-2 truncate">
+              {contact.phone}
+            </div>
+            <div className="mt-4 font-mono text-xs font-bold text-[#f4cb38] uppercase">
+              Connect ↗
+            </div>
+          </a>
+
+          {/* GitHub */}
+          <a
+            href={contact.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#121316] border-4 border-black p-6 shadow-[6px_6px_0px_0px_#00c2ff] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#f4cb38] transition-all group block"
+          >
+            <div className="font-mono text-[10px] text-[#00c2ff] font-bold uppercase mb-1">
+              OPEN SOURCE CODE
+            </div>
+            <div className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[#00c2ff] transition-colors truncate">
+              GitHub Repos
+            </div>
+            <div className="font-grotesk text-xs text-white/70 mt-2 truncate">
+              github.com/youssef-joe
+            </div>
+            <div className="mt-4 font-mono text-xs font-bold text-[#00c2ff] uppercase">
+              Inspect Repos ↗
+            </div>
+          </a>
+
+          {/* LinkedIn */}
+          <a
+            href={contact.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-[#121316] border-4 border-black p-6 shadow-[6px_6px_0px_0px_#ff4d4d] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#f4cb38] transition-all group block"
+          >
+            <div className="font-mono text-[10px] text-[#ff4d4d] font-bold uppercase mb-1">
+              PROFESSIONAL NETWORK
+            </div>
+            <div className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[#ff4d4d] transition-colors truncate">
+              LinkedIn
+            </div>
+            <div className="font-grotesk text-xs text-white/70 mt-2 truncate">
+              linkedin.com/in/youssef-ali
+            </div>
+            <div className="mt-4 font-mono text-xs font-bold text-[#ff4d4d] uppercase">
+              Connect Profile ↗
+            </div>
+          </a>
+
+        </div>
+
+        {/* Footer Bottom Bar */}
+        <div className="pt-12 border-t-2 border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/60">
+          <div>
+            &copy; 2026 Youssef Ali Ahmed &bull; Systems Architecture &amp; R&amp;D
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="#top" className="text-[#f4cb38] hover:underline uppercase font-bold">
+              ↑ Back to Top
+            </a>
+          </div>
         </div>
 
       </div>

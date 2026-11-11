@@ -15,13 +15,25 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['"Space Grotesk"', '"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        display: ['Anton', 'Impact', 'sans-serif'],
+        impact: ['Anton', 'Impact', 'sans-serif'],
         serif: ['Fraunces', 'Playfair Display', 'Georgia', 'serif'],
-        display: ['Fraunces', 'serif'],
+        grotesk: ['"Space Grotesk"', 'sans-serif'],
         mono: ["'Space Mono'", 'ui-monospace', 'monospace'],
         arabic: ["'IBM Plex Sans Arabic'", 'sans-serif'],
       },
       colors: {
+        poster: {
+          yellow: '#f4cb38',
+          orange: '#ff5500',
+          red: '#ff4d4d',
+          blue: '#00c2ff',
+          black: '#0a0a0a',
+          dark: '#111214',
+          card: '#18191c',
+          white: '#ffffff',
+        },
         art: {
           forest: '#0a3122',
           forestDark: '#062016',
