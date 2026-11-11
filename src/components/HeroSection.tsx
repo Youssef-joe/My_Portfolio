@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { hero, contact } from '../data/site';
-import { BulletTag, HeroCharacterBox } from './ArtMotifs';
+import { BulletTag, HeroCharacterBox, HeroAvatarMode } from './ArtMotifs';
 
 export default function HeroSection() {
   const { language } = useLanguage();
   const h = hero[language];
-  const [avatarMode, setAvatarMode] = useState<'character' | 'photo' | 'classical'>('character');
+  const [avatarMode, setAvatarMode] = useState<HeroAvatarMode>('character');
 
   const cycleAvatar = () => {
-    if (avatarMode === 'character') setAvatarMode('classical');
-    else if (avatarMode === 'classical') setAvatarMode('photo');
+    if (avatarMode === 'character') setAvatarMode('photo1');
+    else if (avatarMode === 'photo1') setAvatarMode('photo2');
+    else if (avatarMode === 'photo2') setAvatarMode('classical');
     else setAvatarMode('character');
   };
 
@@ -44,19 +45,18 @@ export default function HeroSection() {
               <button
                 type="button"
                 onClick={cycleAvatar}
-                className="group focus:outline-none transition-transform duration-300 hover:scale-105 active:scale-95"
-                title="Click to toggle avatar (Graphic Character / Classical Soul / Real Photo)"
+                className="group focus:outline-none transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer"
+                title="Click to cycle portrait (Graphic Ink / Real Photo 01 / Real Photo 02 / Classical)"
               >
                 <HeroCharacterBox
                   size={240}
-                  className="w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 shadow-[8px_8px_0px_0px_#f4cb38]"
-                  realPhoto={avatarMode === 'photo'}
-                  classical={avatarMode === 'classical'}
+                  className="w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64"
+                  mode={avatarMode}
                 />
 
                 {/* Micro Toggle Hint Badge */}
-                <div className="absolute -bottom-3 inset-x-0 mx-auto w-max px-2.5 py-0.5 bg-black border-2 border-white/30 text-[9px] font-mono text-white/90 uppercase tracking-wider rounded-sm group-hover:bg-[#f4cb38] group-hover:text-black transition-colors">
-                  Mode: {avatarMode} &bull; Click to switch
+                <div className="absolute -bottom-3 inset-x-0 mx-auto w-max px-2.5 py-0.5 bg-black border-2 border-white/30 text-[9px] font-mono text-white/90 uppercase tracking-wider rounded-sm group-hover:bg-[#f4cb38] group-hover:text-black transition-colors shadow-[2px_2px_0px_0px_#000]">
+                  Mode: {avatarMode} &bull; Click to cycle
                 </div>
               </button>
 
@@ -85,6 +85,57 @@ export default function HeroSection() {
             </div>
           </div>
 
+        </div>
+
+        {/* Interactive Avatar Mode Switcher */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 z-20">
+          <span className="font-mono text-[10px] text-white/50 uppercase tracking-widest font-bold me-1">
+            PORTRAIT:
+          </span>
+          <button
+            type="button"
+            onClick={() => setAvatarMode('character')}
+            className={`px-3 py-1 font-mono text-xs font-bold uppercase transition-all border-2 cursor-pointer ${
+              avatarMode === 'character'
+                ? 'bg-[#ff5500] text-white border-black shadow-[3px_3px_0px_0px_#f4cb38]'
+                : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:text-white'
+            }`}
+          >
+            ● Graphic Ink
+          </button>
+          <button
+            type="button"
+            onClick={() => setAvatarMode('photo1')}
+            className={`px-3 py-1 font-mono text-xs font-bold uppercase transition-all border-2 cursor-pointer ${
+              avatarMode === 'photo1'
+                ? 'bg-[#f4cb38] text-black border-black shadow-[3px_3px_0px_0px_#ff5500]'
+                : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:text-white'
+            }`}
+          >
+            📷 Real Photo 01 (Horizon)
+          </button>
+          <button
+            type="button"
+            onClick={() => setAvatarMode('photo2')}
+            className={`px-3 py-1 font-mono text-xs font-bold uppercase transition-all border-2 cursor-pointer ${
+              avatarMode === 'photo2'
+                ? 'bg-[#00c2ff] text-black border-black shadow-[3px_3px_0px_0px_#f4cb38]'
+                : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:text-white'
+            }`}
+          >
+            ☀️ Real Photo 02 (Sky)
+          </button>
+          <button
+            type="button"
+            onClick={() => setAvatarMode('classical')}
+            className={`px-3 py-1 font-mono text-xs font-bold uppercase transition-all border-2 cursor-pointer ${
+              avatarMode === 'classical'
+                ? 'bg-white text-black border-black shadow-[3px_3px_0px_0px_#ff5500]'
+                : 'bg-white/10 text-white/80 border-white/20 hover:bg-white/20 hover:text-white'
+            }`}
+          >
+            ✦ Classical
+          </button>
         </div>
 
         {/* Subtitle Identity */}
