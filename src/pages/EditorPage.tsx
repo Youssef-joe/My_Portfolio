@@ -167,40 +167,39 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="portal-frame">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)] transition-colors duration-300">
       <SiteHeader />
 
-      <main className="p-4 md:p-6 space-y-6">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
         {/* Breadcrumb */}
-        <div className="text-xs font-mono text-[var(--text-sub)] pb-2 border-b border-[var(--border-light)] flex items-center justify-between">
+        <div className="text-xs font-mono text-[var(--text-muted)] pb-3 border-b border-[var(--border-main)] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="text-[var(--link-color)] hover:underline">
               Portal Index
             </Link>
             <span>/</span>
             <Link to="/writing" className="text-[var(--link-color)] hover:underline">
-              Blog
+              Technical Journal
             </Link>
             <span>/</span>
             <span className="text-[var(--text-main)] font-semibold">cms_studio.exe</span>
           </div>
-          <span className="badge-retro">
-            <span className="badge-retro-key">ACCESS</span>
-            <span className="badge-retro-val">RESTRICTED</span>
+          <span className="text-[11px] font-mono px-3 py-1 rounded-full bg-[#ea5e24] text-white">
+            ACCESS RESTRICTED
           </span>
         </div>
 
         {/* IP Security & Verification Banner */}
-        <div className="border border-[var(--border-main)] bg-[var(--bg-panel)] p-4 shadow-sm">
+        <div className="rounded-2xl border border-[var(--border-main)] bg-[var(--bg-surface)] p-6 shadow-sm">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-3 border-b border-[var(--border-light)] mb-3">
             <div className="flex items-center gap-2">
               <span className="font-mono text-sm font-bold text-[var(--text-main)]">
                 🛡️ IP SECURITY GATEWAY:
               </span>
               {ipLoading ? (
-                <span className="text-xs font-mono text-[var(--text-faint)]">Detecting IP...</span>
+                <span className="text-xs font-mono text-[var(--text-muted)]">Detecting IP...</span>
               ) : (
-                <span className="font-mono text-xs px-2 py-0.5 bg-[var(--bg-surface)] border border-[var(--border-strong)] text-[var(--text-main)] font-bold">
+                <span className="font-mono text-xs px-2.5 py-1 bg-[var(--bg-card)] border border-[var(--border-main)] text-[var(--text-main)] font-bold rounded-lg">
                   {ipStatus?.ip || 'Unknown'}
                 </span>
               )}
@@ -209,9 +208,8 @@ export default function EditorPage() {
             <div className="flex items-center gap-2 text-xs font-mono">
               {ipStatus?.hasIpRestriction ? (
                 ipStatus.isAllowed ? (
-                  <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-                    <span className="status-dot-online" />
-                    AUTHORIZED IP ACCESS
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
+                    ● AUTHORIZED IP ACCESS
                   </span>
                 ) : (
                   <span className="text-rose-600 font-bold">
@@ -219,7 +217,7 @@ export default function EditorPage() {
                   </span>
                 )
               ) : (
-                <span className="text-amber-700 dark:text-amber-400 font-semibold">
+                <span className="text-amber-600 dark:text-amber-400 font-semibold">
                   ▲ OPEN (SET ALLOWED_IPS IN VERCEL)
                 </span>
               )}
@@ -229,17 +227,17 @@ export default function EditorPage() {
           <div className="text-xs text-[var(--text-sub)] space-y-1">
             <p>
               <strong>To lock editing to you alone:</strong> Add{' '}
-              <code className="text-[var(--link-color)] font-mono font-bold">ALLOWED_IPS={ipStatus?.ip || 'YOUR_IP'}</code>{' '}
+              <code className="text-[#ea5e24] font-mono font-bold">ALLOWED_IPS={ipStatus?.ip || 'YOUR_IP'}</code>{' '}
               to your Vercel Project Environment Variables. Any request from a different IP address will be instantly rejected with 403 Forbidden.
             </p>
           </div>
         </div>
 
         {/* Main Editor Card */}
-        <div className="panel-card">
-          <div className="panel-card-header">
-            <div className="panel-title">
-              <span className="text-[var(--accent-red)]">§</span>
+        <div className="rounded-3xl border border-[var(--border-main)] bg-[var(--bg-surface)] overflow-hidden shadow-xl">
+          <div className="p-6 bg-[#0b3323] text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div className="font-serif text-lg font-bold flex items-center gap-2">
+              <span>✦</span>
               <span>TECHNICAL CMS STUDIO // {mode === 'create' ? 'CREATE NEW ARTICLE' : `EDIT: ${formData.slug}`}</span>
             </div>
 

@@ -25,7 +25,7 @@ function HomePage() {
   const t = ui[language];
 
   return (
-    <div className="portal-frame">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)] transition-colors duration-300">
       <a
         href="#about"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:p-2 focus:bg-white focus:text-black focus:border"
@@ -35,15 +35,15 @@ function HomePage() {
 
       <SiteHeader />
 
-      <main>
+      <main className="space-y-4">
         <HeroSection />
         <AboutSection />
-        <ExperienceSection />
         <WorkSection />
         <PublicationsSection />
-        <WritingSection />
         <GallerySection />
         <StorySection />
+        <WritingSection />
+        <ExperienceSection />
         <CVSection />
         <ContactSection />
       </main>

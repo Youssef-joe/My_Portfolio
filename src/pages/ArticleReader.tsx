@@ -5,6 +5,7 @@ import SiteHeader from '../components/SiteHeader';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getArticle, formatDate, articles } from '../lib/articles';
 import { ui, contact } from '../data/site';
+import { SparkleStar, EllipticalTag } from '../components/ArtMotifs';
 
 marked.setOptions({ gfm: true, breaks: false });
 
@@ -25,25 +26,26 @@ export default function ArticleReader() {
     if (!article) return;
     document.title = `${article.title} — Youssef Ali`;
     return () => {
-      document.title = 'Youssef Ali Ahmed — Systems Engineer';
+      document.title = 'Youssef Ali Ahmed — Systems Engineer & R&D Analyst';
     };
   }, [article]);
 
   if (!article) {
     return (
-      <div className="portal-frame">
+      <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)]">
         <SiteHeader />
-        <main className="p-6">
-          <div className="panel-card">
-            <div className="panel-card-header">
-              <span className="panel-title text-[var(--accent-red)]">Error 404 // Article Missing</span>
-            </div>
-            <div className="panel-body">
-              <h1 className="heading mb-4">{t.articleMissing}</h1>
-              <Link to="/writing" className="btn-retro">
-                ← {t.sectionWriting}
-              </Link>
-            </div>
+        <main className="max-w-4xl mx-auto px-4 py-16 text-center">
+          <div className="rounded-3xl p-12 bg-[var(--bg-surface)] border border-[var(--border-main)] shadow-xl">
+            <h1 className="font-serif text-3xl font-bold mb-4">{t.articleMissing}</h1>
+            <p className="font-sans text-sm text-[var(--text-muted)] mb-8">
+              The requested treatise could not be located in the current edition.
+            </p>
+            <Link
+              to="/writing"
+              className="px-6 py-2.5 rounded-full bg-[#ea5e24] text-white text-xs font-semibold hover:bg-[#c94b15] transition-colors"
+            >
+              ← {t.sectionWriting}
+            </Link>
           </div>
         </main>
       </div>
@@ -69,89 +71,79 @@ export default function ArticleReader() {
   const otherArticles = articles.filter((a) => a.slug !== article.slug);
 
   return (
-    <div className="portal-frame">
+    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)] transition-colors duration-300">
       <SiteHeader />
 
-      <main className="p-4 md:p-6" dir={isRTL ? 'rtl' : 'ltr'}>
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10" dir={isRTL ? 'rtl' : 'ltr'}>
         {/* Breadcrumb */}
-        <div className="text-xs font-mono text-[var(--text-sub)] pb-2 border-b border-[var(--border-light)] flex items-center gap-2 mb-4">
-          <Link to="/" className="text-[var(--link-color)] hover:underline">
-            Portal Index
-          </Link>
-          <span>/</span>
-          <Link to="/writing" className="text-[var(--link-color)] hover:underline">
-            Blog Archive
-          </Link>
-          <span>/</span>
-          <span className="text-[var(--text-main)] font-semibold truncate max-w-xs">{article.slug}.md</span>
-        </div>
-
-        <article className="panel-card">
-          <div className="panel-card-header">
-            <div className="panel-title">
-              <span className="text-[var(--accent-red)]">§</span>
-              <span>TECHNICAL NOTEBOOK // {article.slug}.md</span>
-            </div>
-            <span className="badge-retro">
-              <span className="badge-retro-key">READ</span>
-              <span className="badge-retro-val">{article.readingMinutes} min</span>
-            </span>
+        <div className="text-xs font-mono text-[var(--text-muted)] pb-3 border-b border-[var(--border-main)] flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <Link to="/" className="text-[var(--link-color)] hover:underline">
+              Portal Index
+            </Link>
+            <span>/</span>
+            <Link to="/writing" className="text-[var(--link-color)] hover:underline">
+              Technical Journal
+            </Link>
+            <span>/</span>
+            <span className="text-[var(--text-main)] font-semibold truncate max-w-xs">{article.slug}.md</span>
           </div>
 
-          <div className="panel-body">
-            <header className="pb-4 mb-6 border-b border-[var(--border-light)]">
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3 text-xs font-mono">
-                <span className="text-[var(--text-faint)]">
-                  Published: {formatDate(article.date, article.lang)} • Author: {contact.name}
-                </span>
-                <div className="flex flex-wrap gap-1">
-                  {article.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] font-mono px-1.5 py-0.5 bg-[var(--bg-subtle)] border border-[var(--border-light)] text-[var(--text-sub)]"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
+          <button
+            type="button"
+            onClick={share}
+            className="text-[11px] font-mono px-3 py-1 rounded-full bg-[var(--bg-surface)] border border-[var(--border-main)] hover:border-[#ea5e24] transition-colors flex items-center gap-1.5"
+          >
+            <span>{copied ? '✓ Link Copied' : '🔗 Share'}</span>
+          </button>
+        </div>
 
-              <h1 className="text-xl md:text-3xl font-bold text-[var(--text-main)] mb-3 leading-snug">
-                {article.title}
-              </h1>
+        {/* Master Article Monograph Card */}
+        <article className="rounded-3xl overflow-hidden shadow-2xl border border-[var(--border-main)] bg-[var(--bg-surface)]">
+          {/* Article Header */}
+          <header className="p-8 sm:p-12 border-b border-[var(--border-light)] bg-gradient-to-b from-[var(--bg-card)] to-[var(--bg-surface)]">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs font-mono text-[var(--text-muted)]">
+              <span className="flex items-center gap-2">
+                <SparkleStar size={12} color="#ea5e24" />
+                <span>{formatDate(article.date, article.lang)} &bull; {contact.name}</span>
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-light)] text-[var(--text-sub)]">
+                {article.readingMinutes} {t.minRead}
+              </span>
+            </div>
 
-              {article.description && (
-                <p className="text-sm md:text-base text-[var(--text-sub)] font-serif italic mb-4">
-                  {article.description}
-                </p>
-              )}
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4 leading-tight">
+              {article.title}
+            </h1>
 
-              <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[var(--border-light)]">
-                <div className="flex items-center gap-2 text-xs font-mono text-[var(--text-faint)]">
-                  <span className="status-dot-online" />
-                  <span>Technical Peer Review: ScienceWerx Verified</span>
-                </div>
+            {article.description && (
+              <p className="font-serif text-base sm:text-lg text-[var(--text-sub)] italic leading-relaxed mb-6 border-l-2 border-[#ea5e24] pl-4">
+                {article.description}
+              </p>
+            )}
 
-                <button
-                  type="button"
-                  onClick={share}
-                  className="btn-retro text-xs"
+            <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-[var(--border-light)]">
+              {article.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[11px] font-mono px-3 py-1 rounded-full bg-[var(--bg-subtle)] text-[var(--text-sub)] border border-[var(--border-light)]"
                 >
-                  <span>🔗</span>
-                  <span>{copied ? t.shareCopied : t.share}</span>
-                </button>
-              </div>
-            </header>
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </header>
 
-            {/* Markdown rendered body */}
+          {/* Rendered Markdown Prose */}
+          <div className="p-8 sm:p-12 lg:p-14">
             <div
-              className="article-body prose max-w-none text-xs md:text-sm leading-relaxed"
+              className="prose prose-lg max-w-none text-[var(--text-main)] leading-relaxed space-y-6"
               dangerouslySetInnerHTML={{ __html: html }}
             />
 
-            {/* Author Box */}
-            <div className="mt-10 p-4 bg-[var(--bg-subtle)] border border-[var(--border-main)] flex flex-col sm:flex-row items-center sm:items-start gap-4 shadow-sm">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 border-2 border-[var(--border-strong)] bg-black overflow-hidden">
+            {/* Author Placard */}
+            <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-main)] flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-sm">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 border-[var(--border-strong)] bg-black shadow-md">
                 <img
                   src="/LinkedInPic.jpeg"
                   alt={contact.name}
@@ -159,61 +151,79 @@ export default function ArticleReader() {
                 />
               </div>
 
-              <div className="text-xs flex-1 text-center sm:text-start">
-                <div className="font-bold text-[var(--text-main)] text-sm">{contact.name}</div>
-                <div className="text-[var(--accent-blue)] font-semibold mb-1.5">{contact.title}</div>
-                <p className="text-[var(--text-sub)] leading-relaxed mb-2">
-                  Back-end and systems engineer based in Cairo. Open-source contributor in C to the PostgreSQL ecosystem, builder of SoldierDB, and first author of the PeerTrust citation-forensics benchmark paper at ScienceWerx.
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                  <h3 className="font-serif text-xl font-bold text-[var(--text-main)]">
+                    {contact.name}
+                  </h3>
+                  <span className="font-mono text-xs text-[#ea5e24]">
+                    Systems Engineer &bull; R&amp;D Analyst
+                  </span>
+                </div>
+
+                <p className="font-sans text-xs sm:text-sm text-[var(--text-sub)] leading-relaxed mb-3">
+                  Back-end and systems engineer focused on database engineering, low-level C contributions to the PostgreSQL tooling ecosystem, and empirical AI citation-integrity research at ScienceWerx.
                 </p>
-                <div className="flex flex-wrap justify-center sm:justify-start gap-2 font-mono text-[11px]">
-                  <a href={contact.github} target="_blank" rel="noopener noreferrer" className="text-[var(--link-color)] hover:underline">
-                    GitHub ↗
-                  </a>
-                  <span className="text-[var(--text-faint)]">•</span>
-                  <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-[var(--link-color)] hover:underline">
-                    LinkedIn ↗
-                  </a>
-                  <span className="text-[var(--text-faint)]">•</span>
-                  <a href={`mailto:${contact.email}`} className="text-[var(--link-color)] hover:underline">
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 text-xs font-mono">
+                  <a href={`mailto:${contact.email}`} className="text-[#ea5e24] hover:underline">
                     {contact.email}
+                  </a>
+                  <span className="text-[var(--text-muted)]">&bull;</span>
+                  <a href={contact.github} target="_blank" rel="noopener noreferrer" className="text-[#ea5e24] hover:underline">
+                    GitHub
+                  </a>
+                  <span className="text-[var(--text-muted)]">&bull;</span>
+                  <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#ea5e24] hover:underline">
+                    LinkedIn
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Related Articles */}
+            {/* Other Treatises Recommendation */}
             {otherArticles.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-[var(--border-light)]">
-                <h3 className="text-xs font-bold font-mono uppercase tracking-wider text-[var(--text-main)] mb-3">
-                  // More Technical Treatises:
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="mt-14 pt-8 border-t border-[var(--border-main)]">
+                <h4 className="font-serif text-lg font-bold text-[var(--text-main)] mb-6 flex items-center gap-2">
+                  <SparkleStar size={14} color="#ea5e24" />
+                  <span>Other Technical Treatises in this Monograph</span>
+                </h4>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {otherArticles.slice(0, 2).map((other) => (
                     <Link
                       key={other.slug}
                       to={`/writing/${other.slug}`}
-                      className="p-3 border border-[var(--border-light)] bg-[var(--bg-panel)] hover:border-[var(--accent-blue)] block no-underline text-inherit"
+                      className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-main)] hover:border-[#ea5e24] transition-colors duration-200 group flex flex-col justify-between"
                     >
-                      <div className="text-xs font-bold text-[var(--text-main)] hover:underline mb-1">
-                        {other.title}
+                      <div>
+                        <div className="text-[10px] font-mono text-[var(--text-muted)] mb-1">
+                          {formatDate(other.date, other.lang)} &bull; {other.readingMinutes} min read
+                        </div>
+                        <h5 className="font-serif text-base font-bold text-[var(--text-main)] group-hover:text-[#ea5e24] transition-colors leading-snug">
+                          {other.title}
+                        </h5>
                       </div>
-                      <div className="text-[10px] font-mono text-[var(--text-faint)]">
-                        {formatDate(other.date, other.lang)} • {other.readingMinutes} min
-                      </div>
+                      <span className="text-xs font-semibold text-[#ea5e24] mt-3 flex items-center gap-1">
+                        <span>Read Treatise</span>
+                        <span>→</span>
+                      </span>
                     </Link>
                   ))}
                 </div>
               </div>
             )}
 
-            <footer className="mt-8 pt-4 border-t border-[var(--border-light)] flex justify-between items-center text-xs">
-              <Link to="/writing" className="btn-retro">
-                ← {language === 'en' ? 'Back to Blog Archive' : 'العودة لأرشيف المقالات'}
+            {/* Bottom Nav */}
+            <div className="mt-12 pt-6 border-t border-[var(--border-main)] flex justify-between items-center text-xs font-mono">
+              <Link to="/writing" className="text-[#ea5e24] hover:underline flex items-center gap-1">
+                <span>←</span>
+                <span>Back to Technical Journal</span>
               </Link>
-              <Link to="/" className="text-[var(--text-faint)] hover:underline font-mono">
-                Portal Root
-              </Link>
-            </footer>
+              <a href="#top" className="text-[var(--text-muted)] hover:underline">
+                ↑ Top of Page
+              </a>
+            </div>
           </div>
         </article>
       </main>

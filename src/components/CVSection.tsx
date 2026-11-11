@@ -1,6 +1,7 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { cvData, sectionOrder, ui, cvUpdated, contact } from '../data/site';
 import type { CVItem } from '../data/site';
+import { SparkleStar, EllipticalTag } from './ArtMotifs';
 
 export default function CVSection() {
   const { language } = useLanguage();
@@ -14,101 +15,125 @@ export default function CVSection() {
   const order = sectionOrder[language] ?? sectionOrder.en;
 
   return (
-    <section id="cv" className="p-4 md:p-6 border-b border-[var(--border-main)]">
-      <div className="panel-card">
-        <div className="panel-card-header">
-          <div className="panel-title">
-            <span className="text-[var(--accent-red)]">§ 08</span>
-            <span>{t.sectionCV}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => window.print()}
-              className="btn-retro text-xs"
-              title="Print Curriculum Vitae"
-            >
-              <span>🖨</span>
-              <span>{language === 'en' ? 'Print / Export CV' : 'طباعة السيرة الذاتية'}</span>
-            </button>
-          </div>
-        </div>
+    <section id="cv" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* ============================================================ */}
+        {/* MONOGRAPH PLATE 08: Curriculum Vitae                         */}
+        {/* ============================================================ */}
+        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#161a1c] text-white">
+          
+          {/* Header Banner */}
+          <div className="bg-[#101314] p-8 sm:p-12 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="chapter-number text-white font-serif">08</span>
+                <SparkleStar size={18} color="#e5b85c" />
+                <span className="text-xs font-mono text-[#e5b85c] tracking-widest uppercase">
+                  Curriculum Vitae
+                </span>
+              </div>
 
-        <div className="panel-body">
-          {/* Resume Header Placard */}
-          <div className="p-4 bg-[var(--bg-subtle)] border border-[var(--border-light)] mb-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[var(--border-light)] pb-2 mb-3">
+              <h3 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
+                {language === 'ar' ? 'السيرة الذاتية والمؤهلات الأكاديمية' : 'Curriculum Vitae & Credentials'}
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="px-5 py-2.5 rounded-full bg-[#e5b85c] hover:bg-[#d4a342] text-[#141c18] text-xs font-semibold tracking-wider transition-all duration-200 flex items-center gap-2 shadow-lg"
+              >
+                <span>🖨</span>
+                <span>{language === 'ar' ? 'طباعة / حفظ PDF' : 'Print / Export CV'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 sm:p-10 lg:p-12 space-y-10">
+            {/* Candidate Card */}
+            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h3 className="text-base font-bold text-[var(--text-main)]">
+                <h4 className="font-serif text-2xl font-bold text-white">
                   {contact.name}
-                </h3>
-                <p className="text-xs text-[var(--text-sub)]">
+                </h4>
+                <div className="text-xs sm:text-sm text-[#e5b85c] font-medium mt-0.5">
                   {contact.title}
-                </p>
-              </div>
-              <div className="text-xs font-mono text-[var(--text-faint)] sm:text-end">
-                <div>{contact.location}</div>
-                <div>{contact.email}</div>
-                <div>{contact.phone}</div>
-              </div>
-            </div>
-
-            <div className="text-xs text-[var(--text-sub)] leading-relaxed">
-              <strong>Professional Summary:</strong> Back-end and systems engineer focused on database engineering and AI infrastructure. Open-source contributor in C to the PostgreSQL ecosystem, builder of SoldierDB, first author of the PeerTrust citation-forensics benchmark paper at ScienceWerx, and former GDG technical lead.
-            </div>
-          </div>
-
-          {/* Grouped Sections */}
-          <div className="space-y-6">
-            {order.map((category) => {
-              const rows = grouped[category];
-              if (!rows?.length) return null;
-
-              return (
-                <div key={category} className="border border-[var(--border-light)] bg-[var(--bg-panel)] p-4 shadow-sm">
-                  <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[var(--accent-blue)] border-b border-[var(--border-light)] pb-1.5 mb-3">
-                    ▸ {category}
-                  </h4>
-
-                  <div className="space-y-3">
-                    {rows.map((row, idx) => (
-                      <div
-                        key={idx}
-                        className="flex flex-col sm:flex-row justify-between sm:items-baseline gap-1 text-xs pb-2 border-b border-[var(--border-light)] last:border-b-0 last:pb-0"
-                      >
-                        <div className="flex-1">
-                          <span className="font-bold text-[var(--text-main)] text-sm">
-                            {row.title}
-                          </span>
-                          {row.subtitle && (
-                            <div className="text-[var(--text-sub)] text-xs mt-0.5">
-                              {row.subtitle}
-                            </div>
-                          )}
-                        </div>
-
-                        {row.year && (
-                          <div className="font-mono text-[11px] text-[var(--text-faint)] whitespace-nowrap sm:text-end">
-                            {row.year}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
                 </div>
-              );
-            })}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-white/70">
+                <span>{contact.location}</span>
+                <span>&bull;</span>
+                <span>{contact.email}</span>
+                <span>&bull;</span>
+                <span>{contact.phone}</span>
+              </div>
+            </div>
+
+            {/* Categorized Sections */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {order.map((cat) => {
+                const sectionItems = grouped[cat];
+                if (!sectionItems || sectionItems.length === 0) return null;
+
+                return (
+                  <div
+                    key={cat}
+                    className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2 pb-3 mb-4 border-b border-white/10">
+                        <SparkleStar size={14} color="#e5b85c" />
+                        <h5 className="font-serif text-lg font-bold text-white tracking-wide">
+                          {cat}
+                        </h5>
+                      </div>
+
+                      <div className="space-y-4">
+                        {sectionItems.map((item, idx) => (
+                          <div key={idx} className="text-xs">
+                            <div className="flex flex-col sm:flex-row justify-between sm:items-baseline gap-1">
+                              <span className="font-bold text-sm text-white">
+                                {item.title}
+                              </span>
+                              {item.meta && (
+                                <span className="font-mono text-[11px] text-[#e5b85c]">
+                                  {item.meta}
+                                </span>
+                              )}
+                            </div>
+
+                            {item.sub && (
+                              <div className="text-white/80 font-medium mt-0.5">
+                                {item.sub}
+                              </div>
+                            )}
+
+                            {item.description && (
+                              <div className="text-white/60 leading-relaxed mt-1">
+                                {item.description}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Review date */}
+            <div className="pt-4 border-t border-white/10 flex justify-between items-center text-xs font-mono text-white/50">
+              <span>Last reviewed: {cvUpdated}</span>
+              <span className="text-[#e5b85c]">Verified Academic &amp; Industry Record</span>
+            </div>
           </div>
 
-          {/* Revision footer */}
-          <div className="mt-4 pt-3 border-t border-[var(--border-light)] flex justify-between items-center text-xs text-[var(--text-faint)] font-mono">
-            <span>
-              {t.updatedPrefix}: {cvUpdated}
-            </span>
-            <span>
-              Format: 2005 Technical Standard // Verified
-            </span>
-          </div>
         </div>
+
       </div>
     </section>
   );

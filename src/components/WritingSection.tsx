@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { articles, formatDate } from '../lib/articles';
 import { ui } from '../data/site';
+import { SparkleStar, EllipticalTag } from './ArtMotifs';
 
 export default function WritingSection() {
   const { language } = useLanguage();
@@ -9,115 +10,130 @@ export default function WritingSection() {
   const latestArticles = articles.slice(0, 4);
 
   return (
-    <section id="writing" className="p-4 md:p-6 border-b border-[var(--border-main)]">
-      <div className="panel-card">
-        <div className="panel-card-header">
-          <div className="panel-title">
-            <span className="text-[var(--accent-red)]">§ 05</span>
-            <span>{t.sectionWriting}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="badge-retro">
-              <span className="badge-retro-key">DIAGRAMS</span>
-              <span className="badge-retro-val">INCLUDED</span>
-            </span>
-            <span className="badge-retro">
-              <span className="badge-retro-key">FEED</span>
-              <span className="badge-retro-val">RSS 2.0</span>
-            </span>
-          </div>
-        </div>
+    <section id="writing" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* ============================================================ */}
+        {/* MONOGRAPH PLATE 06: Technical Journal                        */}
+        {/* ============================================================ */}
+        <div className="rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#14181a] text-white">
+          
+          {/* Header Banner */}
+          <div className="bg-[#0e1112] p-8 sm:p-12 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="chapter-number text-white font-serif">06</span>
+                <SparkleStar size={18} color="#34d399" />
+                <span className="text-xs font-mono text-[#34d399] tracking-widest uppercase">
+                  Technical Journal
+                </span>
+              </div>
 
-        <div className="panel-body">
-          <p className="text-xs text-[var(--text-sub)] font-mono mb-4 pb-2 border-b border-[var(--border-light)]">
-            // {t.writingTitle}
-          </p>
+              <h3 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
+                {language === 'ar' ? 'سجل المقالات والتحليلات المعمارية' : 'Technical Notebook & Field Treatises'}
+              </h3>
+            </div>
 
-          {latestArticles.length === 0 ? (
-            <p className="prose-body text-xs text-[var(--text-sub)]">{t.writingEmpty}</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <EllipticalTag starColor="#34d399">Architectural Schematics Included</EllipticalTag>
+              
+              <Link
+                to="/editor"
+                className="px-4 py-2 rounded-full bg-white/10 hover:bg-[#ea5e24] text-white text-xs font-mono border border-white/20 transition-all duration-200 flex items-center gap-1.5"
+                title="Open CMS Dispatch Studio"
+              >
+                <span>✦</span>
+                <span>Dispatch Desk</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Articles Grid */}
+          <div className="p-6 sm:p-10 lg:p-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {latestArticles.map((article) => (
                 <div
                   key={article.slug}
-                  className="border border-[var(--border-light)] bg-[var(--bg-panel)] p-4 hover:border-[var(--accent-blue)] transition-colors shadow-sm flex flex-col justify-between"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-[#34d399]/60 shadow-lg transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div>
-                    {/* Visual schematic cover if available */}
+                    {/* Visual Schematic Cover Image */}
                     {article.cover && (
                       <Link
                         to={`/writing/${article.slug}`}
-                        className="block mb-3 border border-[var(--border-strong)] bg-slate-900 overflow-hidden relative group"
+                        className="block mb-5 rounded-xl overflow-hidden border border-white/15 bg-black/60 relative group"
                       >
                         <img
                           src={article.cover}
                           alt={article.title}
-                          className="w-full h-36 object-cover object-top group-hover:scale-[1.02] transition-transform duration-200"
+                          className="w-full h-44 object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
                         />
-                        <div className="absolute top-2 right-2 bg-black/80 text-[10px] font-mono text-cyan-400 px-1.5 py-0.5 border border-cyan-800">
-                          SCHEMATIC
+                        <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-black/80 text-[10px] font-mono text-[#34d399] border border-[#34d399]/40 backdrop-blur-sm">
+                          ✦ SCHEMATIC
                         </div>
                       </Link>
                     )}
 
-                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-2">
-                      <h3 className="text-sm md:text-base font-bold text-[var(--text-main)] leading-snug">
-                        <Link
-                          to={`/writing/${article.slug}`}
-                          className="text-inherit hover:text-[var(--link-hover)] no-underline hover:underline"
-                        >
-                          {article.title}
-                        </Link>
-                      </h3>
+                    <div className="flex items-center gap-2 text-xs font-mono text-white/50 mb-2">
+                      <span>{formatDate(article.date, article.lang)}</span>
+                      <span>&bull;</span>
+                      <span>{article.readingMinutes} {t.minRead}</span>
                     </div>
 
-                    <div className="font-mono text-[11px] text-[var(--text-faint)] mb-2">
-                      Published: {formatDate(article.date, article.lang)} • {article.readingMinutes} {t.minRead}
-                    </div>
+                    <h4 className="font-serif text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-[#34d399] transition-colors leading-snug">
+                      <Link to={`/writing/${article.slug}`} className="hover:underline">
+                        {article.title}
+                      </Link>
+                    </h4>
 
                     {article.description && (
-                      <p className="prose-body text-xs text-[var(--text-sub)] leading-relaxed mb-3">
+                      <p className="font-sans text-sm text-white/80 leading-relaxed mb-6">
                         {article.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-light)] mt-2">
-                    <div className="flex flex-wrap items-center gap-1">
-                      {article.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-[10px] font-mono px-1.5 py-0.5 bg-[var(--bg-surface)] border border-[var(--border-light)] text-[var(--text-sub)]"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
+                  <div>
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/10">
+                      <div className="flex flex-wrap gap-1.5">
+                        {article.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-white/10 text-white/80"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
 
-                    <Link
-                      to={`/writing/${article.slug}`}
-                      className="btn-retro text-[11px]"
-                    >
-                      <span>Read Article →</span>
-                    </Link>
+                      <Link
+                        to={`/writing/${article.slug}`}
+                        className="text-xs font-semibold text-[#34d399] hover:underline flex items-center gap-1"
+                      >
+                        <span>Read Analysis</span>
+                        <span>→</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          )}
 
-          <div className="mt-4 pt-3 border-t border-[var(--border-light)] flex justify-between items-center text-xs">
-            <span className="text-[var(--text-faint)] font-mono">
-              Total Published: {articles.length} posts // All with schematics & benchmarks
-            </span>
-            <Link
-              to="/writing"
-              className="btn-retro"
-            >
-              <span>{t.writingAll} →</span>
-            </Link>
+            {/* Bottom Archive Link */}
+            <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-white/60">
+              <span>Total Treatises Published: {articles.length}</span>
+              <Link
+                to="/writing"
+                className="hover:text-white hover:underline flex items-center gap-2 text-[#34d399]"
+              >
+                <span>Browse Complete Technical Archive</span>
+                <span>→</span>
+              </Link>
+            </div>
           </div>
+
         </div>
+
       </div>
     </section>
   );

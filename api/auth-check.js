@@ -30,3 +30,4 @@ export default function handler(req, res) {
       : 'No ALLOWED_IPS configured. Set ALLOWED_IPS in Vercel to restrict exclusively to your IP.'
   });
 }
+
