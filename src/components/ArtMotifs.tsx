@@ -67,7 +67,7 @@ export type HeroAvatarMode = 'character' | 'photo1' | 'photo2' | 'classical';
  * framed in bold neo-brutalist poster styling.
  */
 export function HeroCharacterBox({
-  size = 280,
+  size,
   className = '',
   mode,
   realPhoto = false,
@@ -87,7 +87,7 @@ export function HeroCharacterBox({
     return (
       <div
         className={`relative aspect-square overflow-hidden bg-[#ff5500] border-4 border-black shadow-[8px_8px_0px_0px_#f4cb38] ${className}`}
-        style={{ width: size, height: size }}
+        style={size !== undefined ? { width: size, height: size } : undefined}
       >
         <img
           src="/images/youssef_portrait_1.jpg"
@@ -97,12 +97,12 @@ export function HeroCharacterBox({
         <div className="absolute top-2 right-2 bg-[#f4cb38] text-black font-mono font-bold text-[9px] uppercase px-1.5 py-0.5 border border-black shadow-[2px_2px_0px_0px_#000]">
           RECORD // 01
         </div>
-        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#f4cb38] font-bold text-center uppercase tracking-wider flex items-center justify-between shadow-[2px_2px_0px_0px_#000]">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#ff5500] animate-pulse"></span>
-            <span>Youssef Ali</span>
+        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#f4cb38] font-bold text-center uppercase tracking-wider flex items-center justify-between gap-2 shadow-[2px_2px_0px_0px_#000]">
+          <span className="flex items-center gap-1.5 min-w-0">
+            <span className="w-2 h-2 shrink-0 rounded-full bg-[#ff5500] animate-pulse"></span>
+            <span className="truncate">Youssef Ali</span>
           </span>
-          <span className="text-white/80">Horizon</span>
+          <span className="text-white/80 shrink-0">Horizon</span>
         </div>
       </div>
     );
@@ -113,7 +113,7 @@ export function HeroCharacterBox({
     return (
       <div
         className={`relative aspect-square overflow-hidden bg-[#00c2ff] border-4 border-black shadow-[8px_8px_0px_0px_#ff5500] ${className}`}
-        style={{ width: size, height: size }}
+        style={size !== undefined ? { width: size, height: size } : undefined}
       >
         <img
           src="/images/youssef_portrait_2.jpg"
@@ -123,10 +123,10 @@ export function HeroCharacterBox({
         <div className="absolute top-2 right-2 bg-[#00c2ff] text-black font-mono font-bold text-[9px] uppercase px-1.5 py-0.5 border border-black shadow-[2px_2px_0px_0px_#000]">
           RECORD // 02
         </div>
-        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#00c2ff] font-bold text-center uppercase tracking-wider flex items-center justify-between shadow-[2px_2px_0px_0px_#000]">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#00c2ff] animate-pulse"></span>
-            <span>Youssef Ali</span>
+        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#00c2ff] font-bold text-center uppercase tracking-wider flex items-center justify-between gap-2 shadow-[2px_2px_0px_0px_#000]">
+          <span className="flex items-center gap-1.5 min-w-0">
+            <span className="w-2 h-2 shrink-0 rounded-full bg-[#00c2ff] animate-pulse"></span>
+            <span className="truncate">Youssef Ali</span>
           </span>
           <span className="text-[#f4cb38]">Blue Sky</span>
         </div>
@@ -139,7 +139,7 @@ export function HeroCharacterBox({
     return (
       <div
         className={`relative aspect-square overflow-hidden bg-[#f4cb38] border-4 border-black shadow-[8px_8px_0px_0px_#ff5500] ${className}`}
-        style={{ width: size, height: size }}
+        style={size !== undefined ? { width: size, height: size } : undefined}
       >
         <img
           src="/classical_portrait.jpg"
@@ -149,7 +149,7 @@ export function HeroCharacterBox({
         <div className="absolute top-2 right-2 bg-[#f4cb38] text-black font-mono font-bold text-[9px] uppercase px-1.5 py-0.5 border border-black shadow-[2px_2px_0px_0px_#000]">
           MUSEUM
         </div>
-        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#f4cb38] font-bold text-center uppercase tracking-wider flex items-center justify-between shadow-[2px_2px_0px_0px_#000]">
+        <div className="absolute bottom-2 inset-x-2 bg-black/90 border-2 border-white/20 px-2.5 py-1 text-[10px] font-mono text-[#f4cb38] font-bold text-center uppercase tracking-wider flex items-center justify-between gap-2 shadow-[2px_2px_0px_0px_#000]">
           <span>✦ Classical Soul</span>
           <span className="text-white/80">Oil Plate</span>
         </div>
@@ -161,7 +161,7 @@ export function HeroCharacterBox({
   return (
     <div
       className={`relative aspect-square bg-[#ff5500] border-4 border-black overflow-hidden shadow-[8px_8px_0px_0px_#f4cb38] flex items-center justify-center select-none ${className}`}
-      style={{ width: size, height: size }}
+      style={size !== undefined ? { width: size, height: size } : undefined}
     >
       <div className="absolute top-2 right-2 bg-black text-[#f4cb38] font-mono font-bold text-[9px] uppercase px-1.5 py-0.5 border border-white/30 shadow-[2px_2px_0px_0px_#000]">
         INK ART

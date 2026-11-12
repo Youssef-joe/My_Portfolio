@@ -177,7 +177,7 @@ export default function ArticleReader() {
               {/* Author Placard with Pop-Art Character Avatar */}
               <div className="mt-16 p-6 sm:p-8 border-4 border-black bg-black shadow-[6px_6px_0px_0px_#ff5500] flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <div className="shrink-0">
-                  <HeroCharacterBox size={100} className="w-24 h-24 shadow-[4px_4px_0px_0px_#f4cb38]" />
+                  <HeroCharacterBox className="w-24 h-24 shadow-[4px_4px_0px_0px_#f4cb38]" />
                 </div>
 
                 <div className="flex-1 text-center sm:text-left space-y-2">

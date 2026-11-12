@@ -26,12 +26,12 @@ export default function GallerySection() {
         </div>
 
         {/* Master Exhibition Card */}
-        <div className="border-4 border-black bg-[#121316] p-6 sm:p-10 lg:p-12 shadow-[8px_8px_0px_0px_#f4cb38]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
+        <div className="border-4 border-black bg-[#121316] p-4 sm:p-10 lg:p-12 shadow-[5px_5px_0px_0px_#f4cb38] sm:shadow-[8px_8px_0px_0px_#f4cb38]">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
             
             {/* Left Column: Museum Framed Classical Portrait */}
-            <div className="lg:col-span-6 flex flex-col items-center justify-center">
-              <div className="relative max-w-md w-full border-4 border-black shadow-[8px_8px_0px_0px_#ff5500] bg-black p-3 sm:p-4 group">
+            <div className="md:col-span-5 lg:col-span-6 flex flex-col items-center justify-center">
+              <div className="relative w-full max-w-[20rem] sm:max-w-md border-4 border-black shadow-[5px_5px_0px_0px_#ff5500] sm:shadow-[8px_8px_0px_0px_#ff5500] bg-black p-2.5 sm:p-4 group">
                 <div className="relative aspect-[4/5] overflow-hidden border-2 border-white/20">
                   <img
                     src="/classical_portrait.jpg"
@@ -42,7 +42,7 @@ export default function GallerySection() {
                 </div>
 
                 {/* Brass Plaque */}
-                <div className="mt-3 text-center py-2 px-4 bg-[#f4cb38] text-black font-display text-sm tracking-wider uppercase border-2 border-black">
+                <div className="mt-3 text-center py-2 px-3 sm:px-4 bg-[#f4cb38] text-black font-display text-xs sm:text-sm tracking-wider uppercase border-2 border-black">
                   Youssef Ali Ahmed &bull; The Classical Soul
                 </div>
               </div>
@@ -53,12 +53,12 @@ export default function GallerySection() {
             </div>
 
             {/* Right Column: Statement & Philosophical Manifest */}
-            <div className="lg:col-span-6 space-y-6">
+            <div className="md:col-span-7 lg:col-span-6 space-y-5 sm:space-y-6">
               <div className="inline-block px-3 py-1 bg-[#ff5500] text-white font-mono text-xs font-bold uppercase tracking-wider">
                 EXHIBIT 001 // THE AESTHETIC PLEDGE
               </div>
 
-              <h3 className="font-display text-3xl sm:text-4xl uppercase tracking-tight text-white leading-tight">
+              <h3 className="font-display text-[1.65rem] sm:text-4xl uppercase tracking-tight text-white leading-tight">
                 "SOFTWARE ENGINEERING WITHOUT AESTHETIC FEELING IS MERELY BOOKKEEPING."
               </h3>
 
@@ -73,7 +73,7 @@ export default function GallerySection() {
                 <BulletTag>AESTHETIC RIGOR</BulletTag>
               </div>
 
-              <div className="pt-6 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/60">
+              <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-white/60">
                 <span>Medium: Oil &amp; Canvas</span>
                 <span className="text-[#f4cb38]">Permanent Soul</span>
               </div>

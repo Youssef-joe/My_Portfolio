@@ -38,9 +38,9 @@ export default function SiteHeader() {
           {/* Brand Logo with TM symbol as in reference */}
           <Link
             to="/"
-            className="flex items-center gap-1 group text-white hover:text-[#f4cb38] transition-colors"
+            className="flex items-center gap-1 shrink-0 group text-white hover:text-[#f4cb38] transition-colors"
           >
-            <span className="font-display text-2xl sm:text-3xl tracking-tight">
+            <span className="font-display text-xl min-[360px]:text-2xl sm:text-3xl tracking-tight whitespace-nowrap">
               YOUSSEF ALI
             </span>
             <span className="font-mono text-xs text-[#f4cb38] align-super -mt-2 font-bold">
@@ -49,11 +49,11 @@ export default function SiteHeader() {
           </Link>
 
           {/* Desktop Nav Items (Middle: HOME > PORTFOLIO SERVICES CONTACT) */}
-          <nav className="hidden lg:flex items-center gap-6 font-mono text-xs tracking-widest font-bold">
+          <nav className="hidden xl:flex items-center gap-3 2xl:gap-6 font-mono text-xs tracking-widest font-bold">
             {navItems.map((item, idx) => {
               const href = onHome ? `#${item.id}` : `/#${item.id}`;
               return (
-                <div key={item.id} className="flex items-center gap-6">
+                <div key={item.id} className="flex items-center gap-3 2xl:gap-6">
                   <a
                     href={href}
                     className="hover:text-[#f4cb38] transition-colors uppercase py-1"
@@ -118,8 +118,9 @@ export default function SiteHeader() {
             {/* Mobile Menu Hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1.5 bg-white/10 text-white hover:bg-[#f4cb38] hover:text-black transition-colors"
+              className="xl:hidden p-1.5 bg-white/10 text-white hover:bg-[#f4cb38] hover:text-black transition-colors"
               aria-label="Open Navigation Menu"
+              aria-expanded={mobileMenuOpen}
             >
               <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileMenuOpen ? (
@@ -140,7 +141,7 @@ export default function SiteHeader() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t-2 border-white/20 bg-black px-4 pt-3 pb-6 space-y-3"
+            className="xl:hidden border-t-2 border-white/20 bg-black px-4 pt-3 pb-6 space-y-3"
           >
             <div className="grid grid-cols-2 gap-2 text-sm font-mono font-bold">
               {navItems.map((item) => {

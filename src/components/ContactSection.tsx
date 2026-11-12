@@ -12,7 +12,7 @@ export default function ContactSection() {
         
         {/* Top Tagline */}
         <div className="text-center space-y-2">
-          <span className="font-mono text-xs uppercase tracking-widest text-[#f4cb38] font-bold px-3 py-1 bg-white/5 border border-white/10 rounded-sm">
+          <span className="inline-block font-mono text-[10px] sm:text-xs uppercase tracking-widest text-[#f4cb38] font-bold px-3 py-1 bg-white/5 border border-white/10 rounded-sm">
             AVAILABLE FOR CORE SYSTEMS, RESEARCH &amp; BACK-END ARCHITECTURE
           </span>
           <p className="font-grotesk text-sm sm:text-base text-white/80 max-w-xl mx-auto pt-2">
@@ -20,18 +20,21 @@ export default function ContactSection() {
           </p>
         </div>
 
-        {/* Master "LET'S WORK" Graphic Stack (From Bottom-Right of Reference Image) */}
-        <div className="relative my-8 sm:my-14 flex items-center justify-center">
-          
+        {/* Master "LET'S WORK" Graphic Stack — stacked on small screens, overlapping on md+ */}
+        <div className="relative my-6 sm:my-10 md:my-14 md:py-6 flex flex-col items-center justify-center">
+
           {/* GIGANTIC CONDENSED LETTERS: LET'S WORK */}
-          <h2 className="font-display text-[14vw] sm:text-[16vw] font-bold text-white tracking-tighter leading-none select-none text-center uppercase whitespace-nowrap opacity-95">
+          <h2
+            dir="ltr"
+            className="font-display text-[17vw] md:text-[16vw] 2xl:text-[15rem] font-bold text-white tracking-tighter leading-[0.85] select-none text-center uppercase whitespace-nowrap opacity-95"
+          >
             LET'S WORK
           </h2>
 
-          {/* Overlapping Character Box Peeking Through Letters (Snapshot Style) */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          {/* Character box: below the letters on small screens, peeking through them on md+ */}
+          <div className="relative mt-5 md:mt-0 md:absolute md:inset-0 flex items-center justify-center pointer-events-none">
             <div className="hover:scale-105 transition-transform duration-300 pointer-events-auto">
-              <HeroCharacterBox size={180} className="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 shadow-[6px_6px_0px_0px_#f4cb38]" />
+              <HeroCharacterBox className="w-36 h-36 sm:w-40 sm:h-40 md:w-[15vw] md:h-[15vw] md:max-w-[11rem] md:max-h-[11rem] shadow-[6px_6px_0px_0px_#f4cb38]" />
             </div>
           </div>
 

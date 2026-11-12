@@ -39,7 +39,7 @@ export default function CVSection() {
               className="px-5 py-2.5 bg-[#f4cb38] hover:bg-[#e0b828] text-black font-mono font-bold text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_0px_#fff] transition-all flex items-center gap-2"
             >
               <span>⎙</span>
-              <span>{t.printCv}</span>
+              <span>{t.printCv ?? (language === 'ar' ? 'طباعة السيرة' : 'Print CV')}</span>
             </button>
             <span className="font-mono text-xs text-white/50">{cvUpdated}</span>
           </div>
